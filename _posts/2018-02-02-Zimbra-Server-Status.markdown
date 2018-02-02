@@ -5,7 +5,8 @@ date:   2018-02-02 19:39:59 +0400
 categories: Zimbra
 ---
 Zimbra have an old problem with its monitoring page. You might see all stopped status on Server Status page even when all Services are running. 
-![image-title-here](/assets/images/zimbraStatus.png){:class="img-responsive"}  
+![image-title-here](/assets/images/zimbraStatus.png){:class="img-responsive"}
+ 
 To fix this issue:  
 1) Check the permissions of `/var/spool/cron/zimbra` file. It should be owned by zimbra and should be 600. If not please run:  
 `chown zimbra:zimbra /var/spool/cron/zimbra`  
