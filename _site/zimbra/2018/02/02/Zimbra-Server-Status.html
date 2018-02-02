@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Zimbra Server Status shows all failed services | Hazaq</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Zimbra Server Status shows all failed services" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Zimbra have an old problem with its monitoring page. You might see all stopped status on Server Status page even when all Services are running. To fix this issue: 1) Check the permissions of /var/spool/cron/zimbra file. It should be owned by zimbra and should be 600. If not please run: chown zimbra:zimbra /var/spool/cron/zimbra chmod 600 /var/spool/cron/zimbra" />
+<meta property="og:description" content="Zimbra have an old problem with its monitoring page. You might see all stopped status on Server Status page even when all Services are running. To fix this issue: 1) Check the permissions of /var/spool/cron/zimbra file. It should be owned by zimbra and should be 600. If not please run: chown zimbra:zimbra /var/spool/cron/zimbra chmod 600 /var/spool/cron/zimbra" />
+<link rel="canonical" href="http://localhost:4000/zimbra/2018/02/02/Zimbra-Server-Status.html" />
+<meta property="og:url" content="http://localhost:4000/zimbra/2018/02/02/Zimbra-Server-Status.html" />
+<meta property="og:site_name" content="Hazaq" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-02-02T19:39:59+04:00" />
+<script type="application/ld+json">
+{"description":"Zimbra have an old problem with its monitoring page. You might see all stopped status on Server Status page even when all Services are running. To fix this issue: 1) Check the permissions of /var/spool/cron/zimbra file. It should be owned by zimbra and should be 600. If not please run: chown zimbra:zimbra /var/spool/cron/zimbra chmod 600 /var/spool/cron/zimbra","@type":"BlogPosting","url":"http://localhost:4000/zimbra/2018/02/02/Zimbra-Server-Status.html","headline":"Zimbra Server Status shows all failed services","dateModified":"2018-02-02T19:39:59+04:00","datePublished":"2018-02-02T19:39:59+04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/zimbra/2018/02/02/Zimbra-Server-Status.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Hazaq" />
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">Hazaq</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/Content/cv.html">Resume</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Zimbra Server Status shows all failed services</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-02-02T19:39:59+04:00" itemprop="datePublished">
+        
+        Feb 2, 2018
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Zimbra have an old problem with its monitoring page. You might see all stopped status on Server Status page even when all Services are running. 
+<img src="/assets/images/zimbraStatus.png" alt="image-title-here" class="img-responsive" /><br />
+To fix this issue:<br />
+1) Check the permissions of <code class="highlighter-rouge">/var/spool/cron/zimbra</code> file. It should be owned by zimbra and should be 600. If not please run:<br />
+<code class="highlighter-rouge">chown zimbra:zimbra /var/spool/cron/zimbra</code><br />
+<code class="highlighter-rouge">chmod 600 /var/spool/cron/zimbra</code></p>
+
+<p>Wait for 30 minutes for any change to take effect. <br />
+If the above doesn’t fix your problem,</p>
+
+<p>2) Change line in zimbra user’s crontab<br />
+from<br />
+<code class="highlighter-rouge">*/30 * * * * /opt/zimbra/libexec/zmstatuslog &gt; /dev/null 2&gt;&amp;1</code><br />
+to<br />
+<code class="highlighter-rouge">*/2 * * * * /opt/zimbra/libexec/zmstatuslog &gt; /dev/null 2&gt;&amp;1</code></p>
+
+<p>3) Then restart zmstatctl service<br />
+<code class="highlighter-rouge">zmstatctl restart</code></p>
+
+<p>4) Run the status logger manually:<br />
+<code class="highlighter-rouge">/opt/zimbra/libexec/zmstatuslog</code></p>
+
+<p>Again, wait for 30 minutes for any change to take effect. <br />
+Monitor server status for couple of hours to make sure that the status hasn’t changed back.</p>
+<h4 id="rrd-tool-time-offset-zimbra-88-and-above">RRD tool time offset (Zimbra 8.8 and above)</h4>
+<p>Another issue that might cause the zimbra server status to fail could be because of RRD tool time offset. RRD is now being used in the latest ZCS versions to display the graphical output under Zimbra Monitor. This issue can come if for some reason the timezone or time of the zimbra host machine is changed after the installation of zimbra.<br />
+To verify the rrd time offset you should get this error message in <code class="highlighter-rouge">'/opt/zimbra/log/zmlogswatch.out'</code><br />
+<code class="highlighter-rouge">illegal attempt to update using time &lt;EpocTime&gt; when last update time is &lt;EpocTime&gt;</code><br />
+This happens because RRD tool does not have the permission to update time in the database where it is storing the logs.<br />
+An easy fix that works for me is to remove all the RRD db files so that it can be regenerated</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Stop</span> <span class="n">the</span> <span class="n">zmlogger</span> <span class="n">or</span> <span class="n">to</span> <span class="n">be</span> <span class="n">safe</span> <span class="n">stop</span> <span class="n">zimbra</span> <span class="n">and</span> <span class="k">then</span>
+<span class="n">mkdir</span> <span class="sr">/opt/</span><span class="n">zimbra</span><span class="o">/</span><span class="n">logger</span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">rrds</span><span class="o">/</span><span class="n">old</span>
+<span class="n">mv</span> <span class="sr">/opt/</span><span class="n">zimbra</span><span class="o">/</span><span class="n">logger</span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">rrds</span><span class="o">/*</span><span class="p">.</span><span class="nf">rrd</span> <span class="sr">/opt/</span><span class="n">zimbra</span><span class="o">/</span><span class="n">logger</span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">rrds</span><span class="o">/</span><span class="n">old</span><span class="o">/</span>
+<span class="n">start</span> <span class="n">the</span> <span class="n">services</span> <span class="n">back</span> <span class="n">again</span><span class="o">.</span></code></pre></figure>
+
+
+  </div>
+
+  
+
+  <a class="u-url" href="/zimbra/2018/02/02/Zimbra-Server-Status.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Hazaq</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            
+              Hazaq
+            
+            </li>
+            
+            <li><a class="u-email" href="mailto:hazaq.naeem@gmail.com">hazaq.naeem@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+  
+  
+  
+  <li><a href="https://github.com/hazaq"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">hazaq</span></a></li>
+  
+  <li><a href="https://www.linkedin.com/in/hazaq-me"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">hazaq-me</span></a></li>
+  
+  
+  
+  
+  
+</ul>
+
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>All things Linux | OpenSource Software | Redhat | AWS | DevOps | Zimbra</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
