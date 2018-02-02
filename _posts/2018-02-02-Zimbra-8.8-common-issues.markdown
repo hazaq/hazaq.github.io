@@ -1,0 +1,24 @@
+---
+layout: post
+title:  "Zimbra 8.8 known Issues"
+date:   2018-02-02 19:39:59 +0400
+categories: Zimbra
+---
+
+**Zimbra webmail https error**  
+After installing zimbra 8.8 if you try to access the webmail using the IP and https protocol you may get "Secure Connection Failed" error on your browser. 
+To fix this you need to set the zimbraVirtualHostname and zimbraVirtualIPAddress for the zimbra domains. 
+For example for the domain integra.lan with IP 10.20.102.66 run the following command. 
+```ruby
+zmprov md domain.local zimbraVirtualHostname `hostname -f` zimbraVirtualIPAddress 10.20.102.66
+/opt/zimbra/libexec/zmproxyconfgen
+zmproxyctl restart
+```
+The above command should be run as zimbra user.
+
+**RRD Tool**  
+View [this](http://hazaq.me/zimbra/2018/02/02/Zimbra-Server-Status.html) Document
+
+**FireFox and Zimbra Admin interface**  
+Zimbra 8.7 and above admin interface has an issue with firefox, if you quickly modify some settings for a user using admin interface without letting firefox load the complete page, for example changing the account status, zimbra might delete the unloaded setting for the user.  So either use firefox patiently or you might want to use google Chrome which is reported better at this.  
+[Source](https://forums.zimbra.org/viewtopic.php?t=61416#p275836)

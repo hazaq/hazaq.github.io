@@ -35,9 +35,9 @@ To verify the rrd time offset you should get this error message in `'/opt/zimbra
 `illegal attempt to update using time <EpocTime> when last update time is <EpocTime>`  
 This happens because RRD tool does not have the permission to update time in the database where it is storing the logs.  
 An easy fix that works for me is to remove all the RRD db files so that it can be regenerated  
-{% highlight ruby %}
+```ruby
 Stop the zmlogger or to be safe stop zimbra and then
 mkdir /opt/zimbra/logger/db/data/rrds/old
 mv /opt/zimbra/logger/db/data/rrds/*.rrd /opt/zimbra/logger/db/data/rrds/old/
 start the services back again.
-{% endhighlight %}
+```
