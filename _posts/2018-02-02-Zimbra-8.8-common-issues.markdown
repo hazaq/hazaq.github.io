@@ -8,9 +8,9 @@ categories: Zimbra
 **Zimbra webmail https error**  
 After installing zimbra 8.8 if you try to access the webmail using the IP and https protocol you may get "Secure Connection Failed" error on your browser. 
 To fix this you need to set the zimbraVirtualHostname and zimbraVirtualIPAddress for the zimbra domains. 
-For example for the domain integra.lan with IP 10.20.102.66 run the following command. 
+For example for the domain domain.local with IP 192.168.1.1 run the following command. 
 ```ruby
-zmprov md domain.local zimbraVirtualHostname `hostname -f` zimbraVirtualIPAddress 10.20.102.66
+zmprov md domain.local zimbraVirtualHostname `hostname -f` zimbraVirtualIPAddress 192.168.1.1
 /opt/zimbra/libexec/zmproxyconfgen
 zmproxyctl restart
 ```
