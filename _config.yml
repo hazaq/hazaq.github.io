@@ -7,7 +7,7 @@ url: "hazaq.me" # the base hostname & protocol for your site, e.g. http://exampl
 linkedin_username: hazaq-me
 github_username:  hazaq
 
-google_analytics: id=UA-113455437-1
+google_analytics: UA-113455437-1
 linkedin: hazaq-me
 # Build settings
 markdown: kramdown
