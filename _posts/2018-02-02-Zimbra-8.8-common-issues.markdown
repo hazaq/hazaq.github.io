@@ -28,7 +28,9 @@ If IP needs to be changed on a running Zimbra server apart from changing the obv
 ```ruby
 #As zimbra  
 zmlocalconfig | grep -i 'ldap_bind_url' #This will give you the currnet value of ldap bind address  
-zmlocalconfig -e "ldap://<ip>:<port>"  
+zmlocalconfig -e ldap_bind_url="ldap://<ip>:<port>"  
+#You can also do some thing this if you want to add mulitple IPs
+zmlocalconfig -e ldap_bind_url="ldap://<IP1>:<port> ldap://<IP2>:<port>"
 ldap stop  
 ldap start  
 ``` 
