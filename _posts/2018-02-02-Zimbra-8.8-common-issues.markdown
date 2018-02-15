@@ -24,7 +24,7 @@ Zimbra 8.7 and above admin interface has an issue with firefox, if you quickly m
 [Source](https://forums.zimbra.org/viewtopic.php?t=61416#p275836)
 
 **Zimbra IP change**  
-If IP needs to be changed on a running Zimbra server apart from changing the obvious like mynetworks, zimbraVirtualIPAddress etc you might want to change ldap bind address. Zimbra ldap bind it self to the IP and if the users try to authenticate from a different IP ldap will not respond. so to fix this  
+If you want to change the IP on a running Zimbra server apart from changing the obvious things like mynetworks, zimbraVirtualIPAddress etc you might want to change ldap bind address. Zimbra ldap bind it self to the IP and if the users try to authenticate from a different IP ldap will not respond. so to fix this  
 ```ruby
 #As zimbra  
 zmlocalconfig | grep -i 'ldap_bind_url' #This will give you the currnet value of ldap bind address  
