@@ -73,5 +73,5 @@ Don't forget to change the following variables in the function, according to you
 * days = 31 # Retention period of old snapshots  
 
 Finally we need to create a CloudWatch Event rule to trigger the function just like we did for creating the snapshots. So follow the same steps in **Schedule Automated Amazon EBS Snapshots Using CloudWatch Events** with the exception of step 4 where you need to choose a Lambda function as a Target.  
-Over lambda function should look like this now.  
+Our lambda function should look like this now.  
 ![lambdaimage2](/assets/images/lambdaimg2.png)
