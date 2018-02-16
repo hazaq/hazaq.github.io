@@ -65,7 +65,7 @@ Now we can create the lambda function.
 **4)** under Runtime select python 2.x  
 **5)** For Roles select **Choose an exsisting role**, select the rule that you created previously and create function.  
 **6)** Now under the Configuration page scroll down to **Function Code** and copy [this](https://github.com/hazaq/purgeOldSnapshots/blob/master/purge_snapshots.py) code.  
-Don't forget to change the following variables according to your environment.  
+Don't forget to change the following variables in the function, according to your environment.  
 * snap_vol = 'vol-12345678asdfg' # The volume ID that needs to purged  
 * snap_exclude = [ 'snap-09876wxyz' ] # Any old snapshot you want to exclude from getting purged
 * region = 'us-west-2' # Region where the purge should occure   
