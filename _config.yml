@@ -15,6 +15,17 @@ theme: minima
 plugins:
   - jekyll-feed
 
+collections:
+  redirects:
+    output: true
+
+defaults:
+  -
+    scope:
+      type: redirects
+    values:
+      layout: redirect
+
 exclude:
         - CNAME
         - Gemfile.lock
