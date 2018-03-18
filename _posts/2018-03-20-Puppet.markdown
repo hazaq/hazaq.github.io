@@ -1,0 +1,29 @@
+---
+layout: post
+title:  "Knowledge: Puppet"
+date:   2018-03-15 20:00:00 +0400
+categories: Puppet
+---
+
+**Puppet**  
+Puppet has a client server architecture, where the server is called puppet master written in 'ruby on rails'. Master and node communicates on port tcp/8140.  
+Indvidual configuration items in a puppet programs are called resource declaration. A resource declaration answers 2 questions, what aspect of the system it is going to manager and what state it should be in.  
+RD have 4 parameter Type, Title, Attributes, Provider.  
+Type or Resource Type manages the type of resource for example: Packge, File, Service 
+```
+node 'db01' {
+  package { 'ntp' :		# package is Type and ntp is title
+    ensure => 'installed'	# Attributes
+  }
+}
+```
+Resource Provider does the heavy lifting to implement the desired configuration. puppet automatically selects the best one. There will be different provider depending on resource type and OS, for example Package resource type have different provider based on RHEL(yum) Ubuntu(apt).  
+
+Configuration Run:  
+Configuration Run is process of running a puppet program. The complete process is as follows.  
+1. pupet agent on the node connects to the puppet master on port tcp/8140.  
+2. It then sends facts about itself.  
+3. Puppet master after receiving the facts classify the node and apply matching definitions.  
+4. It then compiles a catalog and sends it back to the node.  
+5. The agent on the node applies the catalog and repots back.  
+
