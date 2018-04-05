@@ -5,11 +5,11 @@ date:   2018-03-18 20:00:00 +0400
 categories: Puppet
 ---
 
-**Puppet**  
-Puppet has a client server architecture, where the server is called puppet master written in 'ruby on rails'. Master and node communicates on port tcp/8140.  
+**Intro**  
+Puppet has a client server architecture, where the server is called puppet master (written in 'ruby on rails'). Master and nodes communicates on port tcp/8140.  
 Individual configuration items in a puppet programs are called resource declaration. A resource declaration answers 2 questions, what aspect of the system it is going to manager and what state it should be in.  
 RD have 4 parameter Type, Title, Attributes, Provider.  
-Type or Resource Type manages the type of resource for example: Packge, File, Service 
+'Type' or 'Resource type' defines the type of resource to manage for example: Packge, File, Service 
 ```
 node 'db01' {
   package { 'ntp' :		# package is Type and ntp is title
@@ -31,9 +31,45 @@ Configuration Run is process of running a puppet program. The complete process i
 Download the Puppet repository and install puppet master
 ```
 yum install http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm 
-yum install puppet-master -y 
+yum install puppet-server -y 
 puppet master --version
 ```
 Diretory Environment:  
-Puppet programs are stored in files called manifest. These manifests contains node definition and resource declaration. By default puppet looks into `/etc/puppet/manifests/site.pp`. To build a directory environment we can create subdirectory under `/etc/puppet/environments/` like 'production` 'development' etc.  
+Puppet programs are stored in files called manifest. These manifests contains node definition and resource declaration. By default puppet looks into `/etc/puppet/manifests/site.pp`. To build a directory environment we can create subdirectory under `/etc/puppet/environments/` like 'production' 'development' etc. Each environment can have environment related configuration stored in repective directory for example `/etc/puppet/environment/prod/environment.conf`  
+Puppet configuration file is stored in `/etc/puppet/puppet.conf` and contains 3 sections 'Master', 'Agent', 'Main'.  
+My puppet.conf file looks something like this 
+```
+[main]
+    logdir = /var/log/puppet
+    rundir = /var/run/puppet
+    ssldir = $vardir/ssl
+[agent]
+    classfile = $vardir/classes.txt
+    localconfig = $vardir/localconfig
+```
+We need to enable diretory environment by add Master config
+```
+[master]
+    environmentpath = $confdir/environments/
+    basemodulepath = $confdir/modules
+```
+We also need to create a SSL certificte for the master/node communication, to generate SSL keys run the below command.  
+`puppet master --verbose --no-daemonize`
+Installing Agent:  
+In order to install puppet agent on the client, fisrt add the hostname of master in /etc/hosts of the client and then install puppet repo and agent.
+```
+yum install http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+yum install puppet -y
+```
+After installing the puppet agent we need to tell this node who his master is by editing /etc/puppet/puppet.conf 
+```
+[agent]
+.
+.
+.
+server = master
+```
+Now we can generate the agent certificate. 
+`puppet agent --verbose --no-daemonize --onetime `
+`
 

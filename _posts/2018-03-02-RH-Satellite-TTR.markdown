@@ -12,19 +12,28 @@ Key components built on mature open source projects:
 * KATELLO: Content/LifeCycle Management   
 * Candlepin: Subscription Management  
 
-Difference between redhat satellite vs capsule is the web UI, you dont have web UI in capsule server.  
-**LifeCycle Management:** The lifecycle envirnment is a means to manage versions with in the datacenter. By default all content that come in to Satellite goes into the evnirnment called 'Library' from the Library administrators can move content to other envirnments such as Dev, Testing, Prod etc 
+**Terminologies**  
+Orginization: Organizations divide hosts into logical groups based on ownership, purpose, content, security level, and other divisions. Subscription manifests can be imported only into a single organization. Satellite will not upload a certificate that has already been uploaded into a different organization.  
+
+Manifests: Manifest files are signed ZIP files, which provide SKU-level mapping of products, including SLA and expiration dates. Manifests contain information in JSON format and are fairly cryptic. Red Hat Enterprise Linux include the rct tool, which you use to work with manifests.  
+
+LifeCycle Management: The lifecycle envirnment is a means to manage versions with in the datacenter. By default all content that come in to Satellite goes into the evnirnment called 'Library' from the Library administrators can move content to other envirnments such as Dev, Testing, Prod etc 
 ![LifeCycle](/assets/images/rhSat.png) 
  
 The application life cycle is divided into life cycle environments that mimic each stage of the life cycle. Life cycle environments are linked in an environment path. You can promote content along the environment path to the next life cycle stage when required.
 ![AppLife](/assets/images/rhsatAppLife.png)
 
-**Content Views:** A repository (yum/Puppet) provides storage for a collection of content. You can associate a repository with specific content views. Content views are managed selections of content that contain one or more repositories with optional filtering. Published content views are used with life cycle environments. Content View is a new feature that comes with satellite 6, it is means for modeling content 
+Content Views: A repository (yum/Puppet) provides storage for a collection of content. You can associate a repository with specific content views. Content views are managed selections of content that contain one or more repositories with optional filtering. Published content views are used with life cycle environments. Content View is a new feature that comes with satellite 6, it is means for modeling content 
 
 Composite content view: Is a combination of multiple content views. We can take this composite content view and promote it into over lifecycle environment 
 
-Discovry: RH Satellite can automatically identify non provisioned host  
+Discovery: RH Satellite can automatically identify non provisioned host  
+
 Hammer: Is the cli tool to manage Red Hat Satellite 6  
+
+Activation Key: Activation keys are preset keys used when registering the host. They defines life-cycle environment, host collection, organization, subscription usage limit.  
+
+Host Groups: Defines a set of default values for a host
 
 **Disconnected Satellite**  
 Red Hat Satellite Server can still provision systems with the latest security updates, errata, and packages. This is achieved by using *katello-disconnected utility* and *Synchronization host*  
@@ -43,9 +52,6 @@ foreman_theme_satellite: Enables building themes for Satellite.
 Katello: Content and subscription management plug-in for Satellite. 
 redhat_access: Adds Red Hat Access knowledgebase search, case management, and diagnostics to Satellite.  
 
-*Activation Keys*: Defines life-cycle environment, host collection, organization, subscription usage limit.  
-*Host Groups*: Defines a set of default values for a host
-
 **System Requirements**  
 * Red Hat Enterprise Linux 7 Server 64-bit  
 * A minimum of 2 CPU cores, 4 CPU cores are recommended  
@@ -55,12 +61,13 @@ redhat_access: Adds Red Hat Access knowledgebase search, case management, and di
 * Full forward and reverse DNS resolution using a fully-qualified domain name  
 The XFS file system is recommended for Red Hat Satellite 6 because it does not have the inode limitations that ext4 does.  
 
-Repos Required :  
+Repository Required :  
 Red Hat Enterprise Linux $releasever - $basearch  
 Red Hat Enterprise Linux Software collections  
 Satellite6.x  
 
 **Installing Satellite 6** 
+Instead of having distinct installation programs for Satellite and Capsule (katello-installer, capsule-installer), Satellite 6.2 has "scenarios" to determine which features are installed, Satellite-installer --list-scenarios
 ```
 yum install satellite -y
 #list satellite scenarios
@@ -81,7 +88,7 @@ satellite-installer --foreman-initial-organization hazaq-me \
 --foreman-proxy-dns-server "127.0.0.1" \
 --foreman-proxy-dns-zone "example.com" \
 --foreman-admin-password 'password'
-
+#Alternatively, this can be done interactively with satellite-installer -i.
 ```
 After installing you can set the default Orginization and Location by going in to  
  *Admin User* → *My Account*  
@@ -98,7 +105,7 @@ cat > ~/.hammer/cli_config.yml << EOF
 EOF
 hammer organization list
 ```
-Next step is to download the manifest for rh customer portal. An import it into satellite 6 by *Select Content* → *Red Hat Subscriptions*  
+Next step is to download the manifest for rh customer portal. And import it into satellite 6 by *Select Content* → *Red Hat Subscriptions*  
 Now we can select repos that we need by going into *Content* → *Red Hat Repositories*  
 Red Hat Satellite Tools 6.2 Repo should be selected.  
 Once the repos are select we can start synchronize content. To do that we need to select *Content* → *Sync Status* then check the produects and click *Synchronize Now*  
