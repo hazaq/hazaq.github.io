@@ -4,7 +4,7 @@ title:  "Knowledge: Red Hat Satellite 6 things to remember"
 date:   2018-03-02 10:30:00 +0400
 categories: RedHat
 ---
-**Architecture**  
+## Architecture 
 Key components built on mature open source projects:  
 * Puppet: Configuration Management  
 * FOREMAN: Provisioning  
@@ -12,7 +12,7 @@ Key components built on mature open source projects:
 * KATELLO: Content/LifeCycle Management   
 * Candlepin: Subscription Management  
 
-**Terminologies**  
+## Terminologies  
 Orginization: Organizations divide hosts into logical groups based on ownership, purpose, content, security level, and other divisions. Subscription manifests can be imported only into a single organization. Satellite will not upload a certificate that has already been uploaded into a different organization.  
 
 Manifests: Manifest files are signed ZIP files, which provide SKU-level mapping of products, including SLA and expiration dates. Manifests contain information in JSON format and are fairly cryptic. Red Hat Enterprise Linux include the rct tool, which you use to work with manifests.  
@@ -66,8 +66,8 @@ Red Hat Enterprise Linux $releasever - $basearch
 Red Hat Enterprise Linux Software collections  
 Satellite6.x  
 
-**Installing Satellite 6** 
-Instead of having distinct installation programs for Satellite and Capsule (katello-installer, capsule-installer), Satellite 6.2 has "scenarios" to determine which features are installed, Satellite-installer --list-scenarios
+## Installing Satellite 6
+Instead of having distinct installation programs for Satellite and Capsule (katello-installer, capsule-installer), Satellite 6.3 has "scenarios" to determine which features are installed, Satellite-installer --list-scenarios
 ```
 yum install satellite -y
 #list satellite scenarios
@@ -86,7 +86,7 @@ satellite-installer --foreman-initial-organization hazaq-me \
 --foreman-proxy-dns-interface "eth0" \
 --foreman-proxy-dns-reverse 0.168.192.in-addr.arpa \
 --foreman-proxy-dns-server "127.0.0.1" \
---foreman-proxy-dns-zone "example.com" \
+--foreman-proxy-dns-zone "hazaq.me" \
 --foreman-admin-password 'password'
 #Alternatively, this can be done interactively with satellite-installer -i.
 ```
@@ -99,7 +99,7 @@ touch ~/.hammer/cli_config.yml
 chmod 600 ~/.hammer/cli_config.yml
 cat > ~/.hammer/cli_config.yml << EOF
 :foreman:
-  :host: 'https://satellite.example.net/'
+  :host: 'https://satellite.hazaq.me/'
   :username: 'admin'
   :password: 'password'
 EOF
@@ -120,7 +120,7 @@ Red Hat Subscription Manager should be installed and updated.
 YUM and yum-rhn-plugin should be updated.  
 ```
 #Download and the CA intallation rpm  
-wget http://satellite6.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+wget http://satellite.hazaq.me/pub/katello-ca-consumer-latest.noarch.rpm
 yum -y install katello-ca-consumer-latest.noarch.rpm
 #To verfy that CA is installed run
 grep -i baseurl /etc/rhsm/rhsm.conf 
@@ -133,4 +133,31 @@ subscription-manager repos --enable rhel-7-server-satellite-tools-6.2-rpms
 yum -y install katello-agent
 ```
 
+## Puppet
+You can leverage puppet with satellite, run below command on client to install and enable puppet
+```
+yum -y install puppet
+systemctl enable puppet
+/usr/bin/puppet config set server satellite.hazaq.me --section agent
+/usr/bin/puppet config set ca_server satellite.hazaq.me --section agent
+```
+The first time you run Puppet on a client system and connect it to the master, the agent creates an SSL certificate for itself and sends it to the master. The master signs the certificate and returns it to the agent.  
+```
+puppet agent --test --onetime
+```
 
+Output should look something like this.
+```
+Info: Creating a new SSL key for localhost.integra.lan
+Info: Caching certificate for ca
+Info: csr_attributes file loading from /etc/puppet/csr_attributes.yaml
+Info: Creating a new SSL certificate request for localhost.integra.lan
+Info: Certificate Request fingerprint (SHA256): BB:72:25:D0:7D:99:74:AF:17:B2:2E:9E:C4:19:2B:5A:96:44:A9:47:5C:8B:4D:13:13:B7:A3:1E:CA:DD:77:13
+Info: Caching certificate for ca
+Exiting; no certificate found and waitforcert is disabled
+```
+In the Satellite 6 web interface, select Infrastructure → Capsules.  
+In the row with the Satellite server’s host name, at the right in the Actions column, click the down arrow and select Certificates.  
+To the right of your listed client system, click Sign.  
+
+## Provisioning
