@@ -1,0 +1,39 @@
+---
+layout: post                                                                                                                                                            
+title:  "Intro to Machine Learning"
+date:   2018-04-06 15:22:00 +0400
+categories: ML
+---
+# Intro
+In its simplest form machine learning is using data to predict future events. There are two type of machine learning techniques 'Supervised' and 'Unsupervised'  
+
+Supervised Algorithm: In supervised machine learning, a supervised learning algorithm analyzes the training data and produces an inferred function, which can be used for mapping new examples. An example of supervised ML can be SPAM detection software like SpamAssassin. 
+
+Unsupervised Algorithm: In unsupervised machine learing algorithms we are looking at cluster of like data. The algorithm analyses the input data and identifies groups of data that share traits. 
+
+## ML WorkFlow 
+
+A machine learning workflow is a orchestrated and repeatable pattern which systematically transforms and processes information to create prediction solutions.   
+Pointers for ML Workflow:  
+More data is better.  
+Later knowledge effects previos steps  
+Expect to go backwards.  
+Data is never as you need it.  
+![Workflow](/assets/images/ml-workflow.jpeg)
+
+
+## Jupyter NoteBook and Python for ML
+
+One of the most significant advances in the scientific computing arena is underway with the explosion of interest in Jupyter (formerly, IPython) Notebook technology. There are now Jupyter Notebooks on numerous topics in many scientific disciplines.  
+It creates a single interactive document that contains text, code and even grahpics. It gives a great working environment for machine learning plaforms. It also gives a shared environment for teams of developers to work on. Languages supported by Jupyter includes python, Ruby, R, Haskell, C#, PHP and many others.  
+Installing Jupyter notebook with python:
+```
+#Make sure python3 and pip is installed
+#Then update pip
+python3 -m pip install --upgrade pip
+#Install jupyter
+python3 -m pip install jupyter
+#To run the notebook type
+jupyter notebook
+```
+......
