@@ -9,7 +9,7 @@ categories: AWS
 Elastic Beanstalk provides developers and systems administrators an easy, fast way to deploy and manage their applications without having to worry about AWS infrastructure.  
 **Terminology:**    
 Application  
-An Elastic Beanstalk application is a logical collection of Elastic Beanstalk components, including environments, versions, and environment configurations. It is a containor for all the other components that make up elastic beanstalk. An application itself does not cost anything. 
+An Elastic Beanstalk application is a logical collection of Elastic Beanstalk components, including environments, versions, and environment configurations. It is a containor for all the other components that make up elastic beanstalk. An application itself does not cost anything.  
 Application Version  
 In Elastic Beanstalk, an application version refers to a specific, labeled iteration of deployable code for a web application. An application version points to an Amazon Simple Storage Service (Amazon S3) object that contains the deployable code.  
 Environment  
