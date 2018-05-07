@@ -21,6 +21,7 @@ Expect to go backwards.
 Data is never as you need it.  
 ![Workflow](/assets/images/ml-workflow.jpeg)
 
+**Tidy data** : Tidy datasets are easy to manipulate, model and visualize, and have a specific structure (more like sql data). Cleaning and preparing data should produce tidy data. 
 
 ## Jupyter NoteBook and Python for ML
 

@@ -65,3 +65,9 @@ You can construct launch now url for any application which help you launch an ap
 ```
 https://console.aws.amazon.com/elasticbeanstalk/?region=us-west-2#/newApplication?applicationName=YourCompanySampleApp&solutionStackName=PHP&sourceBundleUrl=http://s3.amazonaws.com/mybucket/myobject&environmentType=SingleInstance&tierName=WebServer&instanceType=m1.small&withVpc=true&withRds=true&rdsDBEngine=postgres&rdsDBAllocatedStorage=6&rdsDBInstanceClass=db.m1.small&rdsMultiAZDatabase=true&rdsDBDeletionPolicy=Snapshot
 ```
+
+#Custom Platforms
+You create your own Elastic Beanstalk platform using Packer, which is an open-source tool for creating machine images for many platforms, including AMIs for use with Amazon EC2. Elastic Beanstalk manages Packer as a separate built-in platform, and you don't need to worry about Packer configuration and versions.  
+You create a platform by providing Elastic Beanstalk with a Packer template, and the scripts and files that the template invokes to build an AMI. These components are packaged with a platform definition file, which specifies the template and metadata, into a ZIP archive called a platform definition archive. **Custom platforms are region-specific.**  
+
+
