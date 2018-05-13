@@ -1,5 +1,5 @@
 ---
-layout: post                                                                                                                                                            
+layout: post
 title:  "Intro to Machine Learning"
 date:   2018-04-06 15:22:00 +0400
 categories: ML
@@ -21,7 +21,15 @@ Expect to go backwards.
 Data is never as you need it.  
 ![Workflow](/assets/images/ml-workflow.jpeg)
 
-**Tidy data** : Tidy datasets are easy to manipulate, model and visualize, and have a specific structure (more like sql data). Cleaning and preparing data should produce tidy data. 
+**Tidy data** : Tidy datasets are easy to manipulate, model and visualize, and have a specific structure (more like sql data). Cleaning and preparing data should produce tidy data. In python we can use **panda's dataframe** to reformate the data.  
+
+**Data correlation**: It would be better for our models if the data is correlated as it can through off the model. If there are columns in a table that have one to one correlation then one of the column should be dropped. 
+
+**Some Basic Algorithms**  
+Each of these algorithms are classic machine learning algorithms.   
+Naive Bayes: This algorithm is based on Bayes theorem, predition is based on likelihood from previous data. It assumes that every feature has the same weight. Requires small amount of data to train.  
+Logistic Regression: In this algorithm relationship between features are weighted.  
+Decision Tree: The Decision tree alogrithm uses a binary tree where each node making a decision based on the values 
 
 ## Jupyter NoteBook and Python for ML
 
@@ -37,4 +45,9 @@ python3 -m pip install jupyter
 #To run the notebook type
 jupyter notebook
 ```
-......
+Installing required Libraries
+```
+pip install pandas
+pip install matplotlib
+pip install numpy
+```
