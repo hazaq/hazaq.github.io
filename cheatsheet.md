@@ -36,5 +36,4 @@ ncat --udp localhost 2202 < happy.py
 #Bind Shell on a port
 ncat -l 2202 -e /bin/sh
 ncat localhost 2202
-
 ```

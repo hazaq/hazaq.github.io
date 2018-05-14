@@ -9,7 +9,9 @@ In its simplest form machine learning is using data to predict future events. Th
 
 Supervised Algorithm: In supervised machine learning, a supervised learning algorithm analyzes the training data and produces an inferred function, which can be used for mapping new examples. An example of supervised ML can be SPAM detection software like SpamAssassin. 
 
-Unsupervised Algorithm: In unsupervised machine learing algorithms we are looking at cluster of like data. The algorithm analyses the input data and identifies groups of data that share traits. 
+Unsupervised Algorithm: In unsupervised machine learing algorithms we are looking at cluster of like data. The algorithm analyses the input data and identifies groups of data that share traits.  
+
+Reinforcement learning:
 
 ## ML WorkFlow 
 
