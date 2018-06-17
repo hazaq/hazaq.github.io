@@ -29,9 +29,11 @@ Data is never as you need it.
 
 **Some Basic Algorithms**  
 Each of these algorithms are classic machine learning algorithms.   
-Naive Bayes: This algorithm is based on Bayes theorem, predition is based on likelihood from previous data. It assumes that every feature has the same weight. Requires small amount of data to train.  
-Logistic Regression: In this algorithm relationship between features are weighted.  
-Decision Tree: The Decision tree alogrithm uses a binary tree where each node making a decision based on the values 
+*Naive Bayes*: This algorithm is based on Bayes theorem, predition is based on likelihood from previous data. It assumes that every feature has the same weight. Requires small amount of data to train.  
+*Logistic Regression*: In this algorithm relationship between features are weighted.  
+*Decision Tree*: The Decision tree alogrithm uses a binary tree where each node making a decision based on the values 
+
+**ML Training** is Letting specific data teach a Machine Learining algorithm to create a spcific prediction model and if the data changes we retrain.
 
 ## Jupyter NoteBook and Python for ML
 
