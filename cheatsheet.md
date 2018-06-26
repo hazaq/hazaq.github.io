@@ -37,3 +37,8 @@ ncat --udp localhost 2202 < happy.py
 ncat -l 2202 -e /bin/sh
 ncat localhost 2202
 ```
+#bashcolor
+```
+ export PS1="[\u@\[\e[1;31m\]comp\[\e[0;31m\]-mail\[\e[0m\] \W]\\$ "
+
+```

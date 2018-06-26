@@ -84,4 +84,10 @@ Engine: Container engine could be either docker or rkt by default its docker, en
 Proxy: Take cares of networking inside a node like assigning IPs creating load balance services etc.  
 **replication controller vs deployment**  
 Deployments are a newer and higher level concept than Replication Controllers. They manage the deployment of Replica Sets (also a newer concept, but pretty much equivalent to Replication Controllers), and allow for easy updating of a Replica Set as well as the ability to roll back to a previous deployment.  
+**Config Map**  
+Config Map is key value store (like Python dict object) and lives in etcd. 
+It lets you modify application behaviour without recreading a pod. Config Map are liked to there respective pods.  
+``` 
+$ kubectl create configmap myconfig --from-literal=debug=false 
+```
 
