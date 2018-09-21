@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-21T16:59:22+04:00</updated><id>http://localhost:4000/</id><title type="html">Hazaq</title><subtitle>All things Linux | OpenSource Software | Redhat | AWS | DevOps | Zimbra</subtitle><entry><title type="html">Containers and Docker</title><link href="http://localhost:4000/containers/2018/05/30/Containers.html" rel="alternate" type="text/html" title="Containers and Docker" /><published>2018-05-30T23:30:00+04:00</published><updated>2018-05-30T23:30:00+04:00</updated><id>http://localhost:4000/containers/2018/05/30/Containers</id><content type="html" xml:base="http://localhost:4000/containers/2018/05/30/Containers.html">&lt;h1 id=&quot;docker&quot;&gt;Docker&lt;/h1&gt;
+&lt;p&gt;Docker is a computer program that performs operating-system-level virtualization also known as containerization.Docker uses a client-server architecture.&lt;br /&gt;
+&lt;strong&gt;Client&lt;/strong&gt;&lt;br /&gt;
+Docker has command-line tool responsible for communicating with a server using a RESTful API to request operations.&lt;br /&gt;
+&lt;strong&gt;Server&lt;/strong&gt;&lt;br /&gt;
+This service, which runs as a daemon on an operating system, does the heavy lifting of building, running, and downloading container images.&lt;br /&gt;
+&lt;strong&gt;Images&lt;/strong&gt;&lt;br /&gt;
+Images are read-only templates that contain a runtime environment that includes application libraries and applications.&lt;br /&gt;
+&lt;strong&gt;Registries&lt;/strong&gt;&lt;br /&gt;
+Registrie stores those images for an easy deploy, just like git Registries could be private or public.&lt;br /&gt;
+&lt;strong&gt;Containers&lt;/strong&gt;&lt;br /&gt;
+Containers are segregated user-space environments for running applications isolated from other applications sharing the same host OS.&lt;/p&gt;
+
+&lt;p&gt;Docker uses following Linux kernel functionality.&lt;br /&gt;
+&lt;strong&gt;Namespaces&lt;/strong&gt;&lt;br /&gt;
+In a  namespace, only processes that are members of that namespace can see those resources. The kernel can place specific system resources that are normally visible to all processes into a namespace.&lt;br /&gt;
+&lt;strong&gt;Control groups or cgroup&lt;/strong&gt;&lt;br /&gt;
+cgroups is a Linux kernel feature that limits, accounts for, and isolates the resource usage of a collection of processes.&lt;br /&gt;
+&lt;strong&gt;Creating Docker Container Images&lt;/strong&gt;&lt;br /&gt;
+There are two approaches.&lt;br /&gt;
+Using a Dockerfile: Container images can be built from a base image using a set of steps called instructions. Each instruction creates a new layer on the image that is used to build the final container image.&lt;br /&gt;
+Using a running container: An immutable image is used to start a new container instance and any changes or updates needed by this container are made to a read/write extra layer. This is not a recommended approach because the image size might become large due to unnecessary files.&lt;/p&gt;
+
+&lt;h2 id=&quot;installing-docker&quot;&gt;Installing Docker&lt;/h2&gt;
+&lt;p&gt;Installing docker ce (community edition) is simple just run the below command.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget -qO https://get.docker.com/ | sh
+systemctl start docker.service
+#Verify docker is installed, below command should show you both client and server versions.
+docker version
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Lets start playing with docker.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run hello-world
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;what happened ?&lt;br /&gt;
+&lt;img src=&quot;/assets/images/docker01.png&quot; alt=&quot;docker01&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# look for all containers
+docker ps -a
+# show images
+docker images
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Container Networking&lt;/strong&gt;&lt;br /&gt;
+Three Importent things to understand container networking.&lt;br /&gt;
+Container Network Model (CNM): CNM is the design behined the container networking.&lt;br /&gt;
+Libnetwork: Libnetwork is the implementation of CNM&lt;br /&gt;
+Drivers: The type of Driver define what kind of network will be created inside a container it could be Bridge, VLAN etc. There could be 3rd party Drivers as well also know as Remote Drivers.&lt;br /&gt;
+In short Libnetwork provides the foundation while Drivers sits on top and CNM is just the design model used to implement Libnetwork and Drivers.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;CNM&lt;/strong&gt;&lt;br /&gt;
+CNM has three main constructs that needs to be understood.&lt;br /&gt;
+Sandbox: It is a namespace an Isolated area to create network stack.&lt;br /&gt;
+Endpoint: Endpoint are the interfaces inside the container.&lt;br /&gt;
+Network: Endpoint are created out of a network and those endpoints can talk with each other.&lt;br /&gt;
+&lt;img src=&quot;/assets/images/cnm-model.jpg&quot; alt=&quot;cnm&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#List all the networks
+docker network ls 
+docker network inspect bridge
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h2 id=&quot;kubernetes&quot;&gt;Kubernetes&lt;/h2&gt;
+&lt;p&gt;Kubernetes is an open-source container-orchestration system for automating deployment, scaling and management of containerized applications. Kubernetes have a master node architecture.&lt;br /&gt;
+&lt;strong&gt;Master&lt;/strong&gt;&lt;br /&gt;
+In general we keep the master free of user workloads. Kubernetes master has 4 main components.
+Apiserver: Is the front end for users to manager Kubernetes. Available through RESTful APIs.&lt;br /&gt;
+KV Store: Uses etcd as the key value store, this is were the state of cluster is stored.&lt;br /&gt;
+Controller: Controller monitors the etcd database for changes and applies to mantain desired state.&lt;br /&gt;
+Scheduler: Scheduler ensures that pods are only placed on nodes that have sufficient free resources, it ties to spread pods from the same set across nodes, it tries to balance out the resource utilization of nodes, etc.&lt;br /&gt;
+&lt;strong&gt;Node&lt;/strong&gt;&lt;br /&gt;
+Kubelet: Register a node with the cluster, it carry out the task assigned by the master and reports back. It also exposes an endpoint on the port 10255 where we can inspect the node.&lt;br /&gt;
+Engine: Container engine could be either docker or rkt by default its docker, engine is responsible for managing the containers.&lt;br /&gt;
+Proxy: Take cares of networking inside a node like assigning IPs creating load balance services etc.&lt;br /&gt;
+&lt;strong&gt;replication controller vs deployment&lt;/strong&gt;&lt;br /&gt;
+Deployments are a newer and higher level concept than Replication Controllers. They manage the deployment of Replica Sets (also a newer concept, but pretty much equivalent to Replication Controllers), and allow for easy updating of a Replica Set as well as the ability to roll back to a previous deployment.&lt;br /&gt;
+&lt;strong&gt;Config Map&lt;/strong&gt;&lt;br /&gt;
+Config Map is key value store (like Python dict object) and lives in etcd. 
+It lets you modify application behaviour without recreading a pod. Config Map are liked to there respective pods.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ kubectl create configmap myconfig --from-literal=debug=false 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Docker Docker is a computer program that performs operating-system-level virtualization also known as containerization.Docker uses a client-server architecture. Client Docker has command-line tool responsible for communicating with a server using a RESTful API to request operations. Server This service, which runs as a daemon on an operating system, does the heavy lifting of building, running, and downloading container images. Images Images are read-only templates that contain a runtime environment that includes application libraries and applications. Registries Registrie stores those images for an easy deploy, just like git Registries could be private or public. Containers Containers are segregated user-space environments for running applications isolated from other applications sharing the same host OS.</summary></entry><entry><title type="html">Red Hat OpenStack</title><link href="http://localhost:4000/openstack/2018/05/25/RedHatOpenStack.html" rel="alternate" type="text/html" title="Red Hat OpenStack" /><published>2018-05-25T02:52:00+04:00</published><updated>2018-05-25T02:52:00+04:00</updated><id>http://localhost:4000/openstack/2018/05/25/RedHatOpenStack</id><content type="html" xml:base="http://localhost:4000/openstack/2018/05/25/RedHatOpenStack.html">&lt;p&gt;Red Hat openstack 10 is based on OpenStack Newton.&lt;/p&gt;</content><author><name></name></author><summary type="html">Red Hat openstack 10 is based on OpenStack Newton.</summary></entry><entry><title type="html">Install OpenStack with packstack</title><link href="http://localhost:4000/openstack/2018/05/17/OpenStack.html" rel="alternate" type="text/html" title="Install OpenStack with packstack" /><published>2018-05-17T15:52:00+04:00</published><updated>2018-05-17T15:52:00+04:00</updated><id>http://localhost:4000/openstack/2018/05/17/OpenStack</id><content type="html" xml:base="http://localhost:4000/openstack/2018/05/17/OpenStack.html">&lt;p&gt;#OpenStack components&lt;/p&gt;
+
+&lt;p&gt;Keystone: Identity Service&lt;br /&gt;
+Glance: Image Service&lt;br /&gt;
+Nova: Compute Service&lt;br /&gt;
+Neutron: Networking&lt;br /&gt;
+Cinder: Storage Service&lt;br /&gt;
+Horizon: Web UI&lt;/p&gt;
+
+&lt;h1 id=&quot;installing-openstack&quot;&gt;Installing OpenStack&lt;/h1&gt;
+&lt;p&gt;Two ways to install OpenStack.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Packstack installation&lt;/li&gt;
+  &lt;li&gt;Manual installation&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;PackStack&lt;/strong&gt;&lt;br /&gt;
+PackStack is an automation tool to install Openstack.&lt;br /&gt;
+Make sure there is swapon the system. Before running the packstack maker sure that NetworkManager is stopped and disabled. And setting a static IP would be good idea.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#Install the openstack repo
+yum install centos-release-openstack-ocata 
+yum install openstack-packstack 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">#OpenStack components</summary></entry><entry><title type="html">Intro to Machine Learning</title><link href="http://localhost:4000/ml/2018/04/06/ML.html" rel="alternate" type="text/html" title="Intro to Machine Learning" /><published>2018-04-06T15:22:00+04:00</published><updated>2018-04-06T15:22:00+04:00</updated><id>http://localhost:4000/ml/2018/04/06/ML</id><content type="html" xml:base="http://localhost:4000/ml/2018/04/06/ML.html">&lt;h1 id=&quot;intro&quot;&gt;Intro&lt;/h1&gt;
+&lt;p&gt;In its simplest form machine learning is using data to predict future events. There are two type of machine learning techniques ‘Supervised’ and ‘Unsupervised’&lt;/p&gt;
+
+&lt;p&gt;Supervised Algorithm: In supervised machine learning, a supervised learning algorithm analyzes the training data and produces an inferred function, which can be used for mapping new examples. An example of supervised ML can be SPAM detection software like SpamAssassin.&lt;/p&gt;
+
+&lt;p&gt;Unsupervised Algorithm: In unsupervised machine learing algorithms we are looking at cluster of like data. The algorithm analyses the input data and identifies groups of data that share traits.&lt;/p&gt;
+
+&lt;p&gt;Reinforcement learning:&lt;/p&gt;
+
+&lt;h2 id=&quot;ml-workflow&quot;&gt;ML WorkFlow&lt;/h2&gt;
+
+&lt;p&gt;A machine learning workflow is a orchestrated and repeatable pattern which systematically transforms and processes information to create prediction solutions. &lt;br /&gt;
+Pointers for ML Workflow:&lt;br /&gt;
+More data is better.&lt;br /&gt;
+Later knowledge effects previos steps&lt;br /&gt;
+Expect to go backwards.&lt;br /&gt;
+Data is never as you need it.&lt;br /&gt;
+&lt;img src=&quot;/assets/images/ml-workflow.jpeg&quot; alt=&quot;Workflow&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Tidy data&lt;/strong&gt; : Tidy datasets are easy to manipulate, model and visualize, and have a specific structure (more like sql data). Cleaning and preparing data should produce tidy data. In python we can use &lt;strong&gt;panda’s dataframe&lt;/strong&gt; to reformate the data.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Data correlation&lt;/strong&gt;: It would be better for our models if the data is correlated as it can through off the model. If there are columns in a table that have one to one correlation then one of the column should be dropped.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Some Basic Algorithms&lt;/strong&gt;&lt;br /&gt;
+Each of these algorithms are classic machine learning algorithms. &lt;br /&gt;
+&lt;em&gt;Naive Bayes&lt;/em&gt;: This algorithm is based on Bayes theorem, predition is based on likelihood from previous data. It assumes that every feature has the same weight. Requires small amount of data to train.&lt;br /&gt;
+&lt;em&gt;Logistic Regression&lt;/em&gt;: In this algorithm relationship between features are weighted.&lt;br /&gt;
+&lt;em&gt;Decision Tree&lt;/em&gt;: The Decision tree alogrithm uses a binary tree where each node making a decision based on the values&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ML Training&lt;/strong&gt; is Letting specific data teach a Machine Learining algorithm to create a spcific prediction model and if the data changes we retrain.&lt;/p&gt;
+
+&lt;h2 id=&quot;jupyter-notebook-and-python-for-ml&quot;&gt;Jupyter NoteBook and Python for ML&lt;/h2&gt;
+
+&lt;p&gt;One of the most significant advances in the scientific computing arena is underway with the explosion of interest in Jupyter (formerly, IPython) Notebook technology. There are now Jupyter Notebooks on numerous topics in many scientific disciplines.&lt;br /&gt;
+It creates a single interactive document that contains text, code and even grahpics. It gives a great working environment for machine learning plaforms. It also gives a shared environment for teams of developers to work on. Languages supported by Jupyter includes python, Ruby, R, Haskell, C#, PHP and many others.&lt;br /&gt;
+Installing Jupyter notebook with python:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#Make sure python3 and pip is installed
+#Then update pip
+python3 -m pip install --upgrade pip
+#Install jupyter
+python3 -m pip install jupyter
+#To run the notebook type
+jupyter notebook
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Installing required Libraries&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install pandas
+pip install matplotlib
+pip install numpy
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Intro In its simplest form machine learning is using data to predict future events. There are two type of machine learning techniques ‘Supervised’ and ‘Unsupervised’</summary></entry><entry><title type="html">Knowledge: AWS Elastic Beanstalk</title><link href="http://localhost:4000/aws/2018/03/19/AWS-Elastic-BeanStalk.html" rel="alternate" type="text/html" title="Knowledge: AWS Elastic Beanstalk" /><published>2018-03-19T10:30:00+04:00</published><updated>2018-03-19T10:30:00+04:00</updated><id>http://localhost:4000/aws/2018/03/19/AWS-Elastic-BeanStalk</id><content type="html" xml:base="http://localhost:4000/aws/2018/03/19/AWS-Elastic-BeanStalk.html">&lt;h2 id=&quot;elastic-beanstalk&quot;&gt;Elastic BeanStalk&lt;/h2&gt;
+&lt;p&gt;Elastic Beanstalk provides developers and systems administrators an easy, fast way to deploy and manage their applications without having to worry about AWS infrastructure.&lt;br /&gt;
+&lt;strong&gt;Terminology:&lt;/strong&gt;  &lt;br /&gt;
+Application&lt;br /&gt;
+An Elastic Beanstalk application is a logical collection of Elastic Beanstalk components, including environments, versions, and environment configurations. It is a containor for all the other components that make up elastic beanstalk. An application itself does not cost anything.&lt;br /&gt;
+Application Version&lt;br /&gt;
+In Elastic Beanstalk, an application version refers to a specific, labeled iteration of deployable code for a web application. An application version points to an Amazon Simple Storage Service (Amazon S3) object that contains the deployable code.&lt;br /&gt;
+Environment&lt;br /&gt;
+An application might have 1 or more environment. The infrastructure components are assosiated with an environment like EC2 ELB etc. Each environment runs only a single application version at a time. When you create an environment, Elastic Beanstalk provisions the resources needed to run the application version you specified.&lt;br /&gt;
+Environment Tier&lt;br /&gt;
+When you launch an Elastic Beanstalk environment, you first choose an environment tier. The environment tier that you choose determines whether Elastic Beanstalk provisions resources to support an application that handles HTTP requests or an application that pulls tasks from a queue.&lt;br /&gt;
+Environment Configuration&lt;br /&gt;
+An environment configuration identifies a collection of parameters and settings that define how an environment and its associated resources behave.&lt;br /&gt;
+Configuration Template&lt;br /&gt;
+A configuration template is a starting point for creating unique environment configurations.&lt;/p&gt;
+
+&lt;p&gt;If an EC2 instance in an application becomes unhealthy and can not recover on its own Elastic Beanstalk plane will terminate the instance and Auto Scaling will launch the new instance. 
+Using Route53 elastic beanstalk environment can be added to a domain.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Deployment Options&lt;/strong&gt;&lt;br /&gt;
+All at Once &lt;br /&gt;
+Rolling Deployment&lt;br /&gt;
+Rolling Deployment w/additional Batch&lt;br /&gt;
+Immutable&lt;/p&gt;
+
+&lt;h1 id=&quot;configuration-options&quot;&gt;Configuration Options&lt;/h1&gt;
+&lt;p&gt;configuration options precedence from highest to lowest&lt;br /&gt;
+Settings applied directly to the environment: Settings specified during a create environment or update environment operation on the Elastic Beanstalk API by any client, including the AWS Management Console, EB CLI, AWS CLI, and SDKs.&lt;br /&gt;
+Saved Configurations: Settings for any options that are not applied directly to the environment are loaded from a saved configuration, if specified.&lt;br /&gt;
+Configuration Files (.ebextensions): Settings for any options that are not applied directly to the environment, and also not specified in a saved configuration, are loaded from configuration files in the .ebextensions folder at the root of the application source bundle. &lt;br /&gt;
+Default Values: If a configuration option has a default value, it only applies when the option is not set at any of the above levels.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Configuration Files&lt;/strong&gt; (.ebextensions)&lt;br /&gt;
+Use .ebextensions to configure options that are required to make your application work, and provide default values for other options that can be overridden at a higher level of precedence. Options specified in .ebextensions have the lowest level of precedence and are overridden by settings at any other level.&lt;br /&gt;
+Configuration files support the following keys that affect the Linux server your application runs on.&lt;br /&gt;
+Keys
+Packages, Groups, Users, Sources, Files, Commands, Services, Container Commands&lt;br /&gt;
+&lt;strong&gt;Saved Configurations&lt;/strong&gt;&lt;br /&gt;
+Saved configurations are stored in the Elastic Beanstalk S3 bucket in a folder named after your application. For example, configurations for an application named my-app in the us-west-2 region for account number 0123456789012 can be found at s3://elasticbeanstalk-us-west-2-0123456789012/resources/templates/my-app.&lt;/p&gt;
+
+&lt;h1 id=&quot;configuring-https&quot;&gt;Configuring HTTPS&lt;/h1&gt;
+&lt;p&gt;You can configure a secure listener on your load balancer with a configuration file like the following.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;option_settings:
+  aws:elb:listener:443:
+    SSLCertificateId: arn:aws:acm:us-east-2:1234567890123:certificate/####################################
+    ListenerProtocol: HTTPS
+    InstancePort: 80
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;creating-ebextensions&quot;&gt;Creating .ebextensions&lt;/h1&gt;
+&lt;p&gt;Few tips for creating the .ebextension file.&lt;br /&gt;
+If you are getting this error &lt;code class=&quot;highlighter-rouge&quot;&gt;java.lang.Long cannot be cast to java.lang.String&lt;/code&gt; it might be because you are missing quotes&lt;code class=&quot;highlighter-rouge&quot;&gt; &quot; &lt;/code&gt; in any of the values.&lt;br /&gt;
+If you want to define setting such as AutoScaling Group, Load balancer type etc in .ebextensions configuration then choose &lt;strong&gt;Custom configuration&lt;/strong&gt; from &lt;strong&gt;configure more options&lt;/strong&gt; while creating the environment.&lt;/p&gt;
+
+&lt;h1 id=&quot;launch-now-url&quot;&gt;Launch Now URL&lt;/h1&gt;
+&lt;p&gt;You can construct launch now url for any application which help you launch an application build in elastic beanstalk with a single url.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://console.aws.amazon.com/elasticbeanstalk/?region=us-west-2#/newApplication?applicationName=YourCompanySampleApp&amp;amp;solutionStackName=PHP&amp;amp;sourceBundleUrl=http://s3.amazonaws.com/mybucket/myobject&amp;amp;environmentType=SingleInstance&amp;amp;tierName=WebServer&amp;amp;instanceType=m1.small&amp;amp;withVpc=true&amp;amp;withRds=true&amp;amp;rdsDBEngine=postgres&amp;amp;rdsDBAllocatedStorage=6&amp;amp;rdsDBInstanceClass=db.m1.small&amp;amp;rdsMultiAZDatabase=true&amp;amp;rdsDBDeletionPolicy=Snapshot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;#Custom Platforms
+You create your own Elastic Beanstalk platform using Packer, which is an open-source tool for creating machine images for many platforms, including AMIs for use with Amazon EC2. Elastic Beanstalk manages Packer as a separate built-in platform, and you don’t need to worry about Packer configuration and versions.&lt;br /&gt;
+You create a platform by providing Elastic Beanstalk with a Packer template, and the scripts and files that the template invokes to build an AMI. These components are packaged with a platform definition file, which specifies the template and metadata, into a ZIP archive called a platform definition archive. &lt;strong&gt;Custom platforms are region-specific.&lt;/strong&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Elastic BeanStalk Elastic Beanstalk provides developers and systems administrators an easy, fast way to deploy and manage their applications without having to worry about AWS infrastructure. Terminology: Application An Elastic Beanstalk application is a logical collection of Elastic Beanstalk components, including environments, versions, and environment configurations. It is a containor for all the other components that make up elastic beanstalk. An application itself does not cost anything. Application Version In Elastic Beanstalk, an application version refers to a specific, labeled iteration of deployable code for a web application. An application version points to an Amazon Simple Storage Service (Amazon S3) object that contains the deployable code. Environment An application might have 1 or more environment. The infrastructure components are assosiated with an environment like EC2 ELB etc. Each environment runs only a single application version at a time. When you create an environment, Elastic Beanstalk provisions the resources needed to run the application version you specified. Environment Tier When you launch an Elastic Beanstalk environment, you first choose an environment tier. The environment tier that you choose determines whether Elastic Beanstalk provisions resources to support an application that handles HTTP requests or an application that pulls tasks from a queue. Environment Configuration An environment configuration identifies a collection of parameters and settings that define how an environment and its associated resources behave. Configuration Template A configuration template is a starting point for creating unique environment configurations.</summary></entry><entry><title type="html">Knowledge: Puppet</title><link href="http://localhost:4000/puppet/2018/03/18/Puppet.html" rel="alternate" type="text/html" title="Knowledge: Puppet" /><published>2018-03-18T20:00:00+04:00</published><updated>2018-03-18T20:00:00+04:00</updated><id>http://localhost:4000/puppet/2018/03/18/Puppet</id><content type="html" xml:base="http://localhost:4000/puppet/2018/03/18/Puppet.html">&lt;p&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;br /&gt;
+Puppet has a client server architecture, where the server is called puppet master (written in ‘ruby on rails’). Master and nodes communicates on port tcp/8140.&lt;br /&gt;
+Individual configuration items in a puppet programs are called resource declaration. A resource declaration answers 2 questions, what aspect of the system it is going to manager and what state it should be in.&lt;br /&gt;
+RD have 4 parameter Type, Title, Attributes, Provider.&lt;br /&gt;
+‘Type’ or ‘Resource type’ defines the type of resource to manage for example: Packge, File, Service&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'db01'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ntp'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;		&lt;span class=&quot;p&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ntp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ensure&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'installed'&lt;/span&gt;	&lt;span class=&quot;p&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Attributes&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Resource Provider does the heavy lifting to implement the desired configuration. puppet automatically selects the best one. There will be different provider depending on resource type and OS, for example Package resource type have different provider based on RHEL(yum) Ubuntu(apt).&lt;/p&gt;
+
+&lt;p&gt;Configuration Run:&lt;br /&gt;
+Configuration Run is process of running a puppet program. The complete process is as follows.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;pupet agent on the node connects to the puppet master on port tcp/8140.&lt;/li&gt;
+  &lt;li&gt;It then sends facts about itself.&lt;/li&gt;
+  &lt;li&gt;Puppet master after receiving the facts classify the node and apply matching definitions.&lt;/li&gt;
+  &lt;li&gt;It then compiles a catalog and sends it back to the node.&lt;/li&gt;
+  &lt;li&gt;The agent on the node applies the catalog and repots back.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Installing and Configuring Puppet&lt;/strong&gt;&lt;br /&gt;
+Download the Puppet repository and install puppet master&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm 
+yum install puppet-server -y 
+puppet master --version
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Diretory Environment:&lt;br /&gt;
+Puppet programs are stored in files called manifest. These manifests contains node definition and resource declaration. By default puppet looks into &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/puppet/manifests/site.pp&lt;/code&gt;. To build a directory environment we can create subdirectory under &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/puppet/environments/&lt;/code&gt; like ‘production’ ‘development’ etc. Each environment can have environment related configuration stored in repective directory for example &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/puppet/environment/prod/environment.conf&lt;/code&gt;&lt;br /&gt;
+Puppet configuration file is stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/puppet/puppet.conf&lt;/code&gt; and contains 3 sections ‘Master’, ‘Agent’, ‘Main’.&lt;br /&gt;
+My puppet.conf file looks something like this&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[main]
+    logdir = /var/log/puppet
+    rundir = /var/run/puppet
+    ssldir = $vardir/ssl
+[agent]
+    classfile = $vardir/classes.txt
+    localconfig = $vardir/localconfig
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;We need to enable diretory environment by add Master config&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[master]
+    environmentpath = $confdir/environments/
+    basemodulepath = $confdir/modules
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;We also need to create a SSL certificte for the master/node communication, to generate SSL keys run the below command.&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;puppet master --verbose --no-daemonize&lt;/code&gt;
+Installing Agent:&lt;br /&gt;
+In order to install puppet agent on the client, fisrt add the hostname of master in /etc/hosts of the client and then install puppet repo and agent.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+yum install puppet -y
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;After installing the puppet agent we need to tell this node who his master is by editing /etc/puppet/puppet.conf&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[agent]
+.
+.
+.
+server = master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now we can generate the agent certificate. 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;puppet agent --verbose --no-daemonize --onetime &lt;/code&gt;
+`&lt;/p&gt;</content><author><name></name></author><summary type="html">Intro Puppet has a client server architecture, where the server is called puppet master (written in ‘ruby on rails’). Master and nodes communicates on port tcp/8140. Individual configuration items in a puppet programs are called resource declaration. A resource declaration answers 2 questions, what aspect of the system it is going to manager and what state it should be in. RD have 4 parameter Type, Title, Attributes, Provider. ‘Type’ or ‘Resource type’ defines the type of resource to manage for example: Packge, File, Service node 'db01' { package { 'ntp' : # package is Type and ntp is title ensure =&amp;gt; 'installed' # Attributes } } Resource Provider does the heavy lifting to implement the desired configuration. puppet automatically selects the best one. There will be different provider depending on resource type and OS, for example Package resource type have different provider based on RHEL(yum) Ubuntu(apt).</summary></entry><entry><title type="html">Knowledge: Red Hat Satellite 6 things to remember</title><link href="http://localhost:4000/redhat/2018/03/02/RH-Satellite-TTR.html" rel="alternate" type="text/html" title="Knowledge: Red Hat Satellite 6 things to remember" /><published>2018-03-02T10:30:00+04:00</published><updated>2018-03-02T10:30:00+04:00</updated><id>http://localhost:4000/redhat/2018/03/02/RH-Satellite-TTR</id><content type="html" xml:base="http://localhost:4000/redhat/2018/03/02/RH-Satellite-TTR.html">&lt;h2 id=&quot;architecture&quot;&gt;Architecture&lt;/h2&gt;
+&lt;p&gt;Key components built on mature open source projects:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Puppet: Configuration Management&lt;/li&gt;
+  &lt;li&gt;FOREMAN: Provisioning&lt;/li&gt;
+  &lt;li&gt;Pulp: Repository Management&lt;/li&gt;
+  &lt;li&gt;KATELLO: Content/LifeCycle Management&lt;/li&gt;
+  &lt;li&gt;Candlepin: Subscription Management&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;terminologies&quot;&gt;Terminologies&lt;/h2&gt;
+&lt;p&gt;Orginization: Organizations divide hosts into logical groups based on ownership, purpose, content, security level, and other divisions. Subscription manifests can be imported only into a single organization. Satellite will not upload a certificate that has already been uploaded into a different organization.&lt;/p&gt;
+
+&lt;p&gt;Manifests: Manifest files are signed ZIP files, which provide SKU-level mapping of products, including SLA and expiration dates. Manifests contain information in JSON format and are fairly cryptic. Red Hat Enterprise Linux include the rct tool, which you use to work with manifests.&lt;/p&gt;
+
+&lt;p&gt;LifeCycle Management: The lifecycle envirnment is a means to manage versions with in the datacenter. By default all content that come in to Satellite goes into the evnirnment called ‘Library’ from the Library administrators can move content to other envirnments such as Dev, Testing, Prod etc 
+&lt;img src=&quot;/assets/images/rhSat.png&quot; alt=&quot;LifeCycle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The application life cycle is divided into life cycle environments that mimic each stage of the life cycle. Life cycle environments are linked in an environment path. You can promote content along the environment path to the next life cycle stage when required.
+&lt;img src=&quot;/assets/images/rhsatAppLife.png&quot; alt=&quot;AppLife&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Content Views: A repository (yum/Puppet) provides storage for a collection of content. You can associate a repository with specific content views. Content views are managed selections of content that contain one or more repositories with optional filtering. Published content views are used with life cycle environments. Content View is a new feature that comes with satellite 6, it is means for modeling content&lt;/p&gt;
+
+&lt;p&gt;Composite content view: Is a combination of multiple content views. We can take this composite content view and promote it into over lifecycle environment&lt;/p&gt;
+
+&lt;p&gt;Discovery: RH Satellite can automatically identify non provisioned host&lt;/p&gt;
+
+&lt;p&gt;Hammer: Is the cli tool to manage Red Hat Satellite 6&lt;/p&gt;
+
+&lt;p&gt;Activation Key: Activation keys are preset keys used when registering the host. They defines life-cycle environment, host collection, organization, subscription usage limit.&lt;/p&gt;
+
+&lt;p&gt;Host Groups: Defines a set of default values for a host&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disconnected Satellite&lt;/strong&gt;&lt;br /&gt;
+Red Hat Satellite Server can still provision systems with the latest security updates, errata, and packages. This is achieved by using &lt;em&gt;katello-disconnected utility&lt;/em&gt; and &lt;em&gt;Synchronization host&lt;/em&gt;&lt;br /&gt;
+synchronization host is an intermediary system with an Internet connection. This host is in a separate network from the Satellite server.&lt;br /&gt;
+The synchronization host download content through Pulp. The content is then exported onto physical media and transferred to the disconnected Satellite server.&lt;br /&gt;
+&lt;img src=&quot;/assets/images/rhSatDhost.png&quot; alt=&quot;Disconnected Host &quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;FOREMAN Plugins&lt;/strong&gt;&lt;br /&gt;
+foreman-tasks: Provides Dynflow infrastructure for using Dynflow for managing the tasks.&lt;br /&gt;
+foreman_bootdisk: Satellite plug-in for creating iPXE-based boot disks to provision hosts without the need for PXE infrastructure.&lt;br /&gt;
+foreman_discovery: MaaS Discovery plug-in engine for Satellite.&lt;br /&gt;
+foreman_docker: Provisions and manages Docker containers and images from Satellite.&lt;br /&gt;
+foreman_openscap: Satellite plug-in for managing security compliance reports.&lt;br /&gt;
+foreman_remote_execution: Brings remote execution to Satellite, completing the configuration management functionality with remote management functionality.&lt;br /&gt;
+foreman_theme_satellite: Enables building themes for Satellite.&lt;br /&gt;
+Katello: Content and subscription management plug-in for Satellite. 
+redhat_access: Adds Red Hat Access knowledgebase search, case management, and diagnostics to Satellite.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;System Requirements&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Red Hat Enterprise Linux 7 Server 64-bit&lt;/li&gt;
+  &lt;li&gt;A minimum of 2 CPU cores, 4 CPU cores are recommended&lt;/li&gt;
+  &lt;li&gt;A minimum of 12 GB memory is required for the Satellite Server to function, 16 GB of memory or more is recommended&lt;/li&gt;
+  &lt;li&gt;A unique host name, which can contain lower-case letters, numbers, dots (.) and hyphens (-)&lt;/li&gt;
+  &lt;li&gt;A current Red Hat Satellite subscription&lt;/li&gt;
+  &lt;li&gt;Full forward and reverse DNS resolution using a fully-qualified domain name&lt;br /&gt;
+The XFS file system is recommended for Red Hat Satellite 6 because it does not have the inode limitations that ext4 does.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Repository Required :&lt;br /&gt;
+Red Hat Enterprise Linux $releasever - $basearch&lt;br /&gt;
+Red Hat Enterprise Linux Software collections&lt;br /&gt;
+Satellite6.x&lt;/p&gt;
+
+&lt;h2 id=&quot;installing-satellite-6&quot;&gt;Installing Satellite 6&lt;/h2&gt;
+&lt;p&gt;Instead of having distinct installation programs for Satellite and Capsule (katello-installer, capsule-installer), Satellite 6.3 has “scenarios” to determine which features are installed, Satellite-installer –list-scenarios&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install satellite -y
+#list satellite scenarios
+satellite-installer --list-scenarios
+#The installer can be run multiple times to add, disable, and configure features.
+satellite-installer --foreman-initial-organization hazaq-me \
+--foreman-initial-location dxb \
+--scenario satellite \
+--foreman-proxy-tftp  true \
+--foreman-proxy-dhcp true \
+--foreman-proxy-dhcp-gateway &quot;192.168.0.2&quot; \
+--foreman-proxy-dhcp-interface &quot;eth0&quot; \
+--foreman-proxy-dhcp-range &quot;192.168.0.200 192.168.0.250&quot; \
+--foreman-proxy-dns true \
+--foreman-proxy-dns-forwarders &quot;192.168.0.10&quot; \
+--foreman-proxy-dns-interface &quot;eth0&quot; \
+--foreman-proxy-dns-reverse 0.168.192.in-addr.arpa \
+--foreman-proxy-dns-server &quot;127.0.0.1&quot; \
+--foreman-proxy-dns-zone &quot;hazaq.me&quot; \
+--foreman-admin-password 'password'
+#Alternatively, this can be done interactively with satellite-installer -i.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;After installing you can set the default Orginization and Location by going in to&lt;br /&gt;
+ &lt;em&gt;Admin User&lt;/em&gt; → &lt;em&gt;My Account&lt;/em&gt;&lt;br /&gt;
+Set Up Hammer:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir ~/.hammer
+touch ~/.hammer/cli_config.yml
+chmod 600 ~/.hammer/cli_config.yml
+cat &amp;gt; ~/.hammer/cli_config.yml &amp;lt;&amp;lt; EOF
+:foreman:
+  :host: 'https://satellite.hazaq.me/'
+  :username: 'admin'
+  :password: 'password'
+EOF
+hammer organization list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Next step is to download the manifest for rh customer portal. And import it into satellite 6 by &lt;em&gt;Select Content&lt;/em&gt; → &lt;em&gt;Red Hat Subscriptions&lt;/em&gt;&lt;br /&gt;
+Now we can select repos that we need by going into &lt;em&gt;Content&lt;/em&gt; → &lt;em&gt;Red Hat Repositories&lt;/em&gt;&lt;br /&gt;
+Red Hat Satellite Tools 6.2 Repo should be selected.&lt;br /&gt;
+Once the repos are select we can start synchronize content. To do that we need to select &lt;em&gt;Content&lt;/em&gt; → &lt;em&gt;Sync Status&lt;/em&gt; then check the produects and click &lt;em&gt;Synchronize Now&lt;/em&gt;&lt;br /&gt;
+you can see the sync progress by useing the below log file&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tail -f /var/log/foreman/production.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Register Client:&lt;br /&gt;
+The date and time should be correct and synchronized on client and satellite server.&lt;br /&gt;
+Virtualized environments should have ntpd or chronyd.&lt;br /&gt;
+Red Hat Subscription Manager should be installed and updated. 
+YUM and yum-rhn-plugin should be updated.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#Download and the CA intallation rpm  
+wget http://satellite.hazaq.me/pub/katello-ca-consumer-latest.noarch.rpm
+yum -y install katello-ca-consumer-latest.noarch.rpm
+#To verfy that CA is installed run
+grep -i baseurl /etc/rhsm/rhsm.conf 
+#Now we can register this system to the satellite server
+subscription-manager register --org=hazaq-me --environment=Library
+subscription-manager attach --pool &amp;lt;ID&amp;gt;
+#Enable Satellite tools which has the katello agent 
+subscription-manager repos --enable rhel-7-server-satellite-tools-6.2-rpms
+#Install katello agent
+yum -y install katello-agent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;puppet&quot;&gt;Puppet&lt;/h2&gt;
+&lt;p&gt;You can leverage puppet with satellite, run below command on client to install and enable puppet&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum -y install puppet
+systemctl enable puppet
+/usr/bin/puppet config set server satellite.hazaq.me --section agent
+/usr/bin/puppet config set ca_server satellite.hazaq.me --section agent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The first time you run Puppet on a client system and connect it to the master, the agent creates an SSL certificate for itself and sends it to the master. The master signs the certificate and returns it to the agent.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;puppet agent --test --onetime
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Output should look something like this.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Info: Creating a new SSL key for localhost.integra.lan
+Info: Caching certificate for ca
+Info: csr_attributes file loading from /etc/puppet/csr_attributes.yaml
+Info: Creating a new SSL certificate request for localhost.integra.lan
+Info: Certificate Request fingerprint (SHA256): BB:72:25:D0:7D:99:74:AF:17:B2:2E:9E:C4:19:2B:5A:96:44:A9:47:5C:8B:4D:13:13:B7:A3:1E:CA:DD:77:13
+Info: Caching certificate for ca
+Exiting; no certificate found and waitforcert is disabled
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;In the Satellite 6 web interface, select Infrastructure → Capsules.&lt;br /&gt;
+In the row with the Satellite server’s host name, at the right in the Actions column, click the down arrow and select Certificates.&lt;br /&gt;
+To the right of your listed client system, click Sign.&lt;/p&gt;
+
+&lt;h2 id=&quot;provisioning&quot;&gt;Provisioning&lt;/h2&gt;</content><author><name></name></author><summary type="html">Architecture Key components built on mature open source projects: Puppet: Configuration Management FOREMAN: Provisioning Pulp: Repository Management KATELLO: Content/LifeCycle Management Candlepin: Subscription Management</summary></entry><entry><title type="html">AWS: EBS Snapshot Scheduling</title><link href="http://localhost:4000/aws/2018/02/15/AWS-EBS-Snapshot-Scheduling.html" rel="alternate" type="text/html" title="AWS: EBS Snapshot Scheduling" /><published>2018-02-15T12:56:00+04:00</published><updated>2018-02-15T12:56:00+04:00</updated><id>http://localhost:4000/aws/2018/02/15/AWS-EBS-Snapshot-Scheduling</id><content type="html" xml:base="http://localhost:4000/aws/2018/02/15/AWS-EBS-Snapshot-Scheduling.html">&lt;p&gt;&lt;strong&gt;Overview&lt;/strong&gt;&lt;br /&gt;
+In Amazon RDS you can schedule snapshot creation and deletion were snapshots are automatically created and delete after the retention period and you can do all this with in the RDS management console while or after creating the RDS. To do this with Amazon EBS volumes for EC2 there are couple of things you need to do, first schedule automated EBS snapshots using CloudWatch Event rule and then delete old snapshots using AWS Lambda function.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Schedule Automated Amazon EBS Snapshots Using CloudWatch Events&lt;/strong&gt;&lt;br /&gt;
+You can follow &lt;a href=&quot;https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/TakeScheduledSnapshot.html&quot;&gt;these&lt;/a&gt; instructions&lt;br /&gt;
+Create a Rule&lt;br /&gt;
+ &lt;strong&gt;1)&lt;/strong&gt; Open the CloudWatch&lt;br /&gt;
+ &lt;strong&gt;2)&lt;/strong&gt; In the navigation pane, choose Events, Create rule&lt;br /&gt;
+ &lt;strong&gt;3)&lt;/strong&gt; For Event Source: Choose Schedule. Choose Fixed rate of and specify the schedule interval.&lt;br /&gt;
+ &lt;strong&gt;4)&lt;/strong&gt; For Targets, choose Add target and then select EC2 Create Snapshot API call.&lt;br /&gt;
+ &lt;strong&gt;5)&lt;/strong&gt; For Volume ID, choose an EBS volume.&lt;br /&gt;
+ &lt;strong&gt;6)&lt;/strong&gt; Choose Configure details.&lt;br /&gt;
+ &lt;strong&gt;7)&lt;/strong&gt; For Rule definition, type a name and description for the rule.&lt;br /&gt;
+ &lt;strong&gt;8)&lt;/strong&gt; For AWS permissions, choose the option to create a new role and create. This opens the IAM console in a new tab. The new role grants the built-in target permissions to access resources on your behalf. Choose Allow. The tab with the IAM window closes.&lt;br /&gt;
+ &lt;strong&gt;9)&lt;/strong&gt; Choose Create rule.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;AWS Lambda function to delete old Snapshots&lt;/strong&gt;&lt;br /&gt;
+Now lets setup something to delete old snapshots else the snapshots will keep on piling up and it is impractical to delete them everyday manually. You can use lambda function to delete old snapshots.&lt;br /&gt;
+Lets first create the IAM permission required by the Lambda function. In the below template we are giving the CloudWatch log permissions so we can log the output of the lambda function as we purge the snapshots.&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;Version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;2012-10-17&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;Statement&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Effect&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Allow&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;logs:*&quot;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Resource&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;arn:aws:logs:*:*:*&quot;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Effect&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Allow&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ec2:Describe*&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Resource&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;*&quot;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Effect&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Allow&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;ec2:CreateSnapshot&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;ec2:DeleteSnapshot&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;ec2:CreateTags&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;ec2:ModifySnapshotAttribute&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;ec2:ResetSnapshotAttribute&quot;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Resource&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;*&quot;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we can create the lambda function. &lt;br /&gt;
+&lt;strong&gt;1)&lt;/strong&gt; Go to the lambda function page and click on &lt;strong&gt;Create a function&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;2)&lt;/strong&gt; Select &lt;strong&gt;Author from scratch&lt;/strong&gt; 
+&lt;img src=&quot;/assets/images/lambdaimage1.png&quot; alt=&quot;Lambda image 1&quot; /&gt;&lt;br /&gt;
+&lt;strong&gt;3)&lt;/strong&gt; Enter a Name like PurgeOldSnaphosts&lt;br /&gt;
+&lt;strong&gt;4)&lt;/strong&gt; under Runtime select python 2.x&lt;br /&gt;
+&lt;strong&gt;5)&lt;/strong&gt; For Roles select &lt;strong&gt;Choose an exsisting role&lt;/strong&gt;, select the rule that you created previously and create function.&lt;br /&gt;
+&lt;strong&gt;6)&lt;/strong&gt; Now under the Configuration page scroll down to &lt;strong&gt;Function Code&lt;/strong&gt; and copy &lt;a href=&quot;https://github.com/hazaq/purgeOldSnapshots/blob/master/purge_snapshots.py&quot;&gt;this&lt;/a&gt; code.&lt;br /&gt;
+Don’t forget to change the following variables in the function, according to your environment.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;snap_vol = ‘vol-12345678asdfg’ # The volume ID that needs to purged&lt;/li&gt;
+  &lt;li&gt;snap_exclude = [ ‘snap-09876wxyz’ ] # Any old snapshot you want to exclude from getting purged&lt;/li&gt;
+  &lt;li&gt;region = ‘us-west-2’ # Region where the purge should occure&lt;/li&gt;
+  &lt;li&gt;owner_ids = [ ‘111111111111’ ] # Owner id of the snapshot creater&lt;/li&gt;
+  &lt;li&gt;days = 31 # Retention period of old snapshots&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Finally we need to create a CloudWatch Event rule to trigger the function just like we did for creating the snapshots. So follow the same steps in &lt;strong&gt;Schedule Automated Amazon EBS Snapshots Using CloudWatch Events&lt;/strong&gt; with the exception of step 4 where you need to choose a Lambda function as a Target.&lt;br /&gt;
+Our lambda function should look like this now.&lt;br /&gt;
+&lt;img src=&quot;/assets/images/lambdaimg2.png&quot; alt=&quot;lambdaimage2&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Overview In Amazon RDS you can schedule snapshot creation and deletion were snapshots are automatically created and delete after the retention period and you can do all this with in the RDS management console while or after creating the RDS. To do this with Amazon EBS volumes for EC2 there are couple of things you need to do, first schedule automated EBS snapshots using CloudWatch Event rule and then delete old snapshots using AWS Lambda function.</summary></entry><entry><title type="html">Zimbra Server Status shows all failed services</title><link href="http://localhost:4000/zimbra/2018/02/02/Zimbra-Server-Status.html" rel="alternate" type="text/html" title="Zimbra Server Status shows all failed services" /><published>2018-02-02T19:39:59+04:00</published><updated>2018-02-02T19:39:59+04:00</updated><id>http://localhost:4000/zimbra/2018/02/02/Zimbra-Server-Status</id><content type="html" xml:base="http://localhost:4000/zimbra/2018/02/02/Zimbra-Server-Status.html">&lt;p&gt;Zimbra have an old problem with its monitoring page. You might see all stopped status on Server Status page even when all Services are running. 
+&lt;img src=&quot;/assets/images/zimbraStatus.png&quot; alt=&quot;image&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To fix this issue:&lt;br /&gt;
+1) Check the permissions of &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/spool/cron/zimbra&lt;/code&gt; file. It should be owned by zimbra and should be 600. If not please run:&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;chown zimbra:zimbra /var/spool/cron/zimbra&lt;/code&gt;&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;chmod 600 /var/spool/cron/zimbra&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Wait for 30 minutes for any change to take effect. &lt;br /&gt;
+If the above doesn’t fix your problem,&lt;/p&gt;
+
+&lt;p&gt;2) Change line in zimbra user’s crontab&lt;br /&gt;
+from&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;*/30 * * * * /opt/zimbra/libexec/zmstatuslog &amp;gt; /dev/null 2&amp;gt;&amp;amp;1&lt;/code&gt;&lt;br /&gt;
+to&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;*/2 * * * * /opt/zimbra/libexec/zmstatuslog &amp;gt; /dev/null 2&amp;gt;&amp;amp;1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;3) Then restart zmstatctl service&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;zmstatctl restart&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;4) Run the status logger manually:&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/zimbra/libexec/zmstatuslog&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Again, wait for 30 minutes for any change to take effect. &lt;br /&gt;
+Monitor server status for couple of hours to make sure that the status hasn’t changed back.&lt;/p&gt;
+&lt;h4 id=&quot;rrd-tool-time-offset-zimbra-88-and-above&quot;&gt;RRD tool time offset (Zimbra 8.8 and above)&lt;/h4&gt;
+&lt;p&gt;Another issue that might cause the zimbra server status to fail could be because of RRD tool time offset. RRD is now being used in the latest ZCS versions to display the graphical output under Zimbra Monitor. This issue can come if for some reason the timezone or time of the zimbra host machine is changed after the installation of zimbra.&lt;br /&gt;
+To verify the rrd time offset you should get this error message in &lt;code class=&quot;highlighter-rouge&quot;&gt;'/opt/zimbra/log/zmlogswatch.out'&lt;/code&gt;&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;illegal attempt to update using time &amp;lt;EpocTime&amp;gt; when last update time is &amp;lt;EpocTime&amp;gt;&lt;/code&gt;&lt;br /&gt;
+This happens because RRD tool does not have the permission to update time in the database where it is storing the logs.&lt;br /&gt;
+An easy fix that works for me is to remove all the RRD db files so that it can be regenerated&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Stop&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zmlogger&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;safe&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stop&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zimbra&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/opt/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zimbra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rrds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;old&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mv&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/opt/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zimbra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rrds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rrd&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/opt/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zimbra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rrds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;old&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;back&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;again&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Zimbra have an old problem with its monitoring page. You might see all stopped status on Server Status page even when all Services are running. To fix this issue: 1) Check the permissions of /var/spool/cron/zimbra file. It should be owned by zimbra and should be 600. If not please run: chown zimbra:zimbra /var/spool/cron/zimbra chmod 600 /var/spool/cron/zimbra</summary></entry><entry><title type="html">Zimbra 8.8 known Issues</title><link href="http://localhost:4000/zimbra/2018/02/02/Zimbra-8.8-common-issues.html" rel="alternate" type="text/html" title="Zimbra 8.8 known Issues" /><published>2018-02-02T19:39:59+04:00</published><updated>2018-02-02T19:39:59+04:00</updated><id>http://localhost:4000/zimbra/2018/02/02/Zimbra-8.8-common-issues</id><content type="html" xml:base="http://localhost:4000/zimbra/2018/02/02/Zimbra-8.8-common-issues.html">&lt;p&gt;&lt;strong&gt;Zimbra webmail https error&lt;/strong&gt;&lt;br /&gt;
+After installing zimbra 8.8 if you try to access the webmail using the IP and https protocol you may get “Secure Connection Failed” error on your browser. 
+To fix this you need to set the zimbraVirtualHostname and zimbraVirtualIPAddress for the zimbra domains. 
+For example for the domain domain.local with IP 192.168.1.1 run the following command.&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;zmprov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;md&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;domain&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zimbraVirtualHostname&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`hostname -f`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zimbraVirtualIPAddress&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;192.168&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.1&lt;/span&gt;
+&lt;span class=&quot;sr&quot;&gt;/opt/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zimbra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;libexec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zmproxyconfgen&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zmproxyctl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;restart&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The above command should be run as zimbra user.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;RRD Tool&lt;/strong&gt;&lt;br /&gt;
+View &lt;a href=&quot;http://hazaq.me/zimbra/2018/02/02/Zimbra-Server-Status.html&quot;&gt;this&lt;/a&gt; Document&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;FireFox and Zimbra Admin interface&lt;/strong&gt;&lt;br /&gt;
+Zimbra 8.7 and above admin interface has an issue with firefox, if you quickly modify some settings for a user using admin interface without letting firefox load the complete page, for example changing the account status, zimbra might delete the unloaded setting for the user.  So either use firefox patiently or you might want to use google Chrome which is reported better at this.&lt;br /&gt;
+&lt;a href=&quot;https://forums.zimbra.org/viewtopic.php?t=61416#p275836&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Zimbra IP change&lt;/strong&gt;&lt;br /&gt;
+If you want to change the IP on a running Zimbra server apart from changing the obvious things like mynetworks, zimbraVirtualIPAddress etc you might want to change ldap bind address. Zimbra ldap bind it self to the IP and if the users try to authenticate from a different IP ldap will not respond. so to fix this&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#As zimbra  &lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zmlocalconfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ldap_bind_url'&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#This will give you the currnet value of ldap bind address  &lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zmlocalconfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ldap_bind_url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ldap://&amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt;&quot;&lt;/span&gt;  
+&lt;span class=&quot;c1&quot;&gt;#You can also do some thing like this if you want to add mulitple IPs&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zmlocalconfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ldap_bind_url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ldap://&amp;lt;IP1&amp;gt;:&amp;lt;port&amp;gt; ldap://&amp;lt;IP2&amp;gt;:&amp;lt;port&amp;gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ldap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stop&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;ldap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Zimbra webmail https error After installing zimbra 8.8 if you try to access the webmail using the IP and https protocol you may get “Secure Connection Failed” error on your browser. To fix this you need to set the zimbraVirtualHostname and zimbraVirtualIPAddress for the zimbra domains. For example for the domain domain.local with IP 192.168.1.1 run the following command. zmprov md domain.local zimbraVirtualHostname `hostname -f` zimbraVirtualIPAddress 192.168.1.1 /opt/zimbra/libexec/zmproxyconfgen zmproxyctl restart The above command should be run as zimbra user.</summary></entry></feed>
