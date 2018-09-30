@@ -18,7 +18,7 @@ Reinforcement learning:
 A machine learning workflow is a orchestrated and repeatable pattern which systematically transforms and processes information to create prediction solutions.   
 Pointers for ML Workflow:  
 More data is better.  
-Later knowledge effects previos steps  
+Later knowledge effects previous steps  
 Expect to go backwards.  
 Data is never as you need it.  
 ![Workflow](/assets/images/ml-workflow.jpeg)
