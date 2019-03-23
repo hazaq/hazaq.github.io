@@ -4,7 +4,7 @@ title: Ansible
 permalink: /Ansible
 ---
 
-# YAML
+## YAML
 List in YAML 
 ```
 languages:
@@ -52,3 +52,5 @@ New line '|' vs Single line '>'
     going to present as a
     single line
 ```
+## Ansible/Tower Terminologies 
+Inventories: An inventory is a collection of hosts managed by Tower
