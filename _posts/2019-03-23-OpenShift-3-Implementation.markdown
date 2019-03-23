@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Implementing OpenShift"
-date:   2018-03-23 22:07:00 +0400
+date:   2019-03-23 22:07:00 +0400
 categories: Containers
 ---
 
