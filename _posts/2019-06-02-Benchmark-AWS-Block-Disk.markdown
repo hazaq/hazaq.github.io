@@ -26,11 +26,18 @@ generated 100 requests in 1.65 min, 400 KiB, 1 iops, 4.04 KiB/s
 min/avg/max/mdev = 2.88 ms / 3.65 ms / 17.3 ms / 1.58 ms
 ```
 
-Now EBS gp2 with xfs as the filesystem 
+Now EBS gp2 with xfs as the filesystem  
+Read Latency  
 ```
 99 requests completed in 31.1 ms, 396 KiB read, 3.19 k iops, 12.4 MiB/s
 generated 100 requests in 1.65 min, 400 KiB, 1 iops, 4.04 KiB/s
 min/avg/max/mdev = 258.2 us / 313.9 us / 821.3 us / 75.4 us
+```
+Write Latecny  
+```
+99 requests completed in 76.9 ms, 396 KiB written, 1.29 k iops, 5.03 MiB/s
+generated 100 requests in 1.65 min, 400 KiB, 1 iops, 4.04 KiB/s
+min/avg/max/mdev = 621.2 us / 776.4 us / 1.33 ms / 110.0 us
 ```
 
 Generally all EBS volume types have similar latency and vary a little bit from one test to the other. Here is the test with st1 hdd storage type
