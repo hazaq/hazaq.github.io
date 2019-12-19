@@ -1,0 +1,15 @@
+---
+layout: post
+title:  "test"
+date:   2019-04-14 14:00:00 +0400
+categories: test
+---
+
+Case Studies - Damac Properties
+Web Portal and Landing Pages
+One of the largest property developers in the Middle East, Damac Properties has extensive infrastructure - and one of the most important sources of leads and customer access points is the main portal for the group at www.damacproperties.com. Having been visited more than 6 million times last year, Damac wanted to have a revamped architecture that would serve content and provide landing pages for the hundreds of properties, both completed and under construction - and serve them at lightning fast speeds, and very securely as well.
+It was decided to approach the whole concept of content serving in a different manner. Separating the content-creation and content-serving into separate engines is the key to enhance performance. The website is served to the public using ReactJS as a static pages and the speed/performance improved. GastbyJS build is used as a static web site generator, which accesses the contents from the headless Drupal8 CMS leveraging GraphQL for the extraction during the build.
+Once the static website is generated as a set of HTML, JS,CSS files it is pushed to Amazon S3, a powerful serverless web-hosting platform. The S3 website is served via a CloudFront CDN to make it faster and to utlize caching. In this way, the website is fully managed, scaled by S3 and CloudFront makes it available globally with speed.
+Technologies used: AWS, EC2, EBS, ELB, S3, CloudFront, CloudWatch, CodeDeploy, RDS, Gatsby JS, React
+Scalability is infinite, determined by S3 and CloudFront limits. Performance of the portal has increased dramatically.
+Reference architecture is shown below.
