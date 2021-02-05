@@ -1,10 +1,9 @@
 ---
 title: Log Collection on AWS with Logstash  
-author: hazaq_naeem  
 date: 27 September 2020 12:30:00 +0400
 categories: [AWS, ECS, ElasticSearch, Logstash]
 tags: [Logstash, ECS]
-published: false
+published: true
 ---
 
 In any environment that it is containerized, virtual or physical and whether it is running on On-Premise or on Cloud, logging is of paramount importance. Normally logs contain important metadata that can be used to identify issues and security risks inside our applications. Logs are the first place we look for, to troubleshoot any issues with our applications and services. If a business critical application goes down or is facing any problems, identifying the problem sooner can save the business from losing money. So it because very important that we should not only collect logs but also index them in a way that it should be very easy to search, analyze and even visualize. For this purpose there are a lot open source and commercial tools available such as Elastic Stack, Splunk, Datadog, etc. All you need is a good log processing tool that can ingest data from different sources and push them into your favourite SIEM solution, one such tool is the Elastic's Logstash.  
@@ -17,7 +16,7 @@ In this blog post I will show you how you can use a tool like Logstash and proce
 The idea is to use Logstash to pull logs generated from different AWS sources and push it into the Amazon Elasticsearch Service. Amazon Elasticsearch Service is a fully managed service that makes it easy for you to deploy, secure, and run Elasticsearch. The service provides support for open source Elasticsearch APIs, managed Kibana, integration with Logstash and other AWS services.  
 You should have a running Amazon Elasticsearch cluster in order to follow along. But if you have different output data source for example Datadog then you need make modification as per the use case. 
 
-![Logstash-arch](/public/img/posts/logstash-01.jpeg)
+![Logstash-arch](/assets/images/logstash-01.jpeg)
 
 ### Building the Logstash Configuration  
 The Logstash configuration files defines what our input data sources are and how the data should be indexed and mutated before sending it to the output data source. Logstash configuration has three stages 'Input', 'Filter', 'Output'. 'Input' stage defines where the logs or data is residing while the 'Output' stage tells logstash where to push the filtered logs. Finally in the 'Filter' section you create the mapping for your data type, this is where you define which field inside your data is IP, time, integer or string etc. Creating a proper filter is very important because if not done right you will not be able to take advantage of being able to search your logs more granularly and it will be no different than parsing logs directly from the log files.  
@@ -158,12 +157,12 @@ You can use this github repository [integratechfze/logstash-ecs](https://github.
 
 Before we can run our Logstash service we need to create a task definition and finally create a service that runs the task in our ECS cluster. As part of the task definition we need to assign proper permissions to the Logstash service. We need to create an ECS role and assign read permissions on the S3 buckets where our logs are stored. The network mode could be bridge, since we are not exposing Logstash ports.  
 
-![Logstash-ecs-service](/public/img/posts/logstash-02.png)
+![Logstash-ecs-service](/assets/images/logstash-02.png)
 
 ### Visualizing the Logs in Kibana  
 
 Once the Logstash service start it will push logs into our Amazon Elasticsearch cluster, as explained earlier Amazon Elasticsearch comes with build in integrated Kibana service. We can login to Kibana and view our indices under "Index Management".  
-![Logstash-kibana](/public/img/posts/logstash-03.png)  
+![Logstash-kibana](/assets/images/logstash-03.png)  
 Now we can build "Index Patterns", Visualization, Dashboards, Alarms and Anomaly Detection on our logs using the Kibana web interface.  
 
 ### Conclusion
