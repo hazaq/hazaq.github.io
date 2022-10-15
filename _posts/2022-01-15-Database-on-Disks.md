@@ -17,7 +17,7 @@ The ROWID is a unique column, much like a primary key, that is generated interna
 |Row_Id (Hidden)|User_id (primary key)|Name|Order|Amount|
 |:------:|:------:|:------:|:------:|:------:|
 |1|00001|Alex|789654|100|
-|2|00002|Ali|789655|59|
+|2|00002|Tom|789655|59|
 
   
 ### Page
@@ -30,4 +30,18 @@ Indexes are used to find rows with specific column values quickly. Without an in
   
 ## Row Store vs Column Store
 As explained earlier, row store databases are stores all rows (in most cases) together these rows are placed in chucks together called pages. Unlike in a row store, columnar databases stores entire columns together if the column does not fit on a single page it will break the column into multiple pages.  
-
+  
+Let me explain with an example, let’s say that we have a table shown below. We also assume that a page can only store 2 rows.  
+  
+|Row_Id (Hidden)|User_id (primary key)|Name|Order|Amount|
+|:------:|:------:|:------:|:------:|:------:|
+|1|00001|Alex|789654|100|
+|2|00002|Tom|789655|59|
+|3|00003|John|789656|90|
+|4|00004|Ahmed|789657|150|
+|5|00005|Ali|789658|110|
+|6|00006|Joe|789659|150|
+|7|00007|Arjan|789660|70|
+|8|00008|Noah|789661|50|
+|9|00009|Esa|789662|400|
+|10|00010|Adam|789663|250|
