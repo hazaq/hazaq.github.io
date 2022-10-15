@@ -47,9 +47,11 @@ Let me explain with an example, let’s say that we have a table shown below. We
 |10|00010|Adam|789663|250|
 
   
-With these assumption a row-oriented database on the disk will look something like this.  
+With these assumption a row-oriented database on the disk will look something like this. 
+   
 ![Row-data](/assets/images/Database-row-vs-column-1.png)
 
   
 On a column-oriented database, the data will be stored as shown below.  
+  
 ![Column-data](/assets/images/Database-row-vs-column-2.png)
