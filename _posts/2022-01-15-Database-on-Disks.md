@@ -76,3 +76,6 @@ SELECT Amount FROM Table;
   
 On a row database, we will have to go through every page and filter out the column.  
 ![Row-search](/assets/images/Database-row-vs-column-5.png)
+  
+On a columnar database, this query will be very efficient as all the data we need is written on a single page.  
+![Column-search](/assets/images/Database-row-vs-column-6.png)
