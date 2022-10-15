@@ -52,4 +52,4 @@ With these assumption a row-oriented database on the disk will look something li
 
   
 On a column-oriented database, the data will be stored as shown below.  
-![Column-data](/assets/images/Databse-row-vs-column-2.png)
+![Column-data](/assets/images/Database-row-vs-column-2.png)
