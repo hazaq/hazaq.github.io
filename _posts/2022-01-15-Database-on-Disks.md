@@ -73,4 +73,6 @@ Now let’s try a different kind of query, let's say you need to pull the ‘Amo
 ```
 SELECT Amount FROM Table;
 ```
-
+  
+On a row database, we will have to go through every page and filter out the column.  
+![Row-search](/assets/images/Database-row-vs-column-5.png)
