@@ -54,4 +54,12 @@ With these assumption a row-oriented database on the disk will look something li
   
 On a column-oriented database, the data will be stored as shown below.  
   
-![Column-data](/assets/images/Database-row-vs-column-2.png)
+![Column-data](/assets/images/Database-row-vs-column-2.png)  
+  
+Now imagine that you want to run a query to select all the columns of a row, for example,  
+"""
+SELECT * from Table WHERE User_id = 00005
+"""
+On a row-oriented database, if there was no indexing, the database engine will go page by page, until it finds the page where the row is located. The database will load both the rows on that page and filter the row that was required.  
+
+![Row-filter](/assets/images/Database-row-vs-column-3.png)
