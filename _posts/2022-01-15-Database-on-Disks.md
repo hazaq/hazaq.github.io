@@ -1,6 +1,6 @@
 --- 
 layout: post 
-title: Data Storage for Row vs Columnar Databases
+title: Data on a Row vs Columnar Data Store
 date: 14 October 2022 08:33:00 +0400 
 categories: [Database, Data] 
 tags: [Database] 
@@ -79,3 +79,6 @@ On a row database, we will have to go through every page and filter out the colu
   
 On a columnar database, this query will be very efficient as all the data we need is written on a single page.  
 ![Column-search](/assets/images/Database-row-vs-column-6.png)
+
+  
+I hope that this little explanation tells you what is the difference between columnar vs row databases and why we should go for column-oriented databases for analytic processing.  
