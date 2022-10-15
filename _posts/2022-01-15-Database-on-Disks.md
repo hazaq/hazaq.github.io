@@ -63,3 +63,7 @@ SELECT * from Table WHERE User_id = 00005
 On a row-oriented database, if there was no indexing, the database engine will go page by page, until it finds the page where the row is located. The database will load both the rows on that page and filter the row that was required.  
 
 ![Row-filter](/assets/images/Database-row-vs-column-3.png)
+  
+If we run the same query on a columnar database, the database will have to load every page in the memory from the disk and start filtering the data that is required. This will the same case if we were to update an entry. As you can imagen these types of queries are not very efficient on a columnar database.  
+  
+![Column-filter](/assets/images/Database-row-vs-column-4.png)
