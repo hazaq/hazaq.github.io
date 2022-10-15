@@ -13,7 +13,8 @@ But before that, we need to discuss a few core database storage concepts.
 
 ### ROWID pseudocolumn  
 The ROWID is a unique column, much like a primary key, that is generated internally by the system and returns the address of a row. Unlike a primary key which is maintained by the user to refer row inside a table, ROWID is created and hidden from the user.  
+
 |Row_Id (Hidden)|User_id (primary key)|Name|Order|Amount|
-|:------:|:------:|:------:|:------:|:------:| 
+|:------:|:------:|:------:|:------:|:------:|
 |1|00001|Alex|789654|100|
 |2|00002|Ali|789655|59|
