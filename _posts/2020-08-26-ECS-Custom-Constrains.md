@@ -79,7 +79,7 @@ We can add custom attributes by update the `/etc/ecs/ecs.config` file. Below is 
 #!/bin/bash
 echo ECS_CLUSTER=ecs-demo >> /etc/ecs/ecs.config
 Instance_lifecycle=$(curl http://169.254.169.254/latest/meta-data/instance-life-cycle)
-if [ $Instance_lifecycle == "on-demand" ]
+if [ "$Instance_lifecycle" == "on-demand" ]
 then
   echo 'ECS_INSTANCE_ATTRIBUTES={"LifeCycle": "On-Demand"}' >> /etc/ecs/ecs.config
 else
@@ -139,3 +139,6 @@ Now every time a new container instance is registered with ECS cluster the Cloud
 <br/>
 ### Conclusion  
 Amazon ECS task placement constrains are a very powerful feature available to the developers and cluster administrators. Not all attributes for the task placements are available but with custom attributes you can practically apply any constraint that you can think of and there will always be more than one way of doing it.  
+
+#### Special Thanks 
+Leonard Lin @Peoplegeist
