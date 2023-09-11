@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Resize an Azure VM With Local Storage
+title: Resize an Azure VM With Local Storage to Non-Local Storage SKU
 ---
 <html>
 <head>
